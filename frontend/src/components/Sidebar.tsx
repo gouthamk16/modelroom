@@ -14,11 +14,10 @@ export function Sidebar({
 }) {
   return (
     <nav className="bg-surface-container-low fixed left-0 top-0 h-full w-[280px] border-r border-outline-variant flex flex-col py-lg px-md gap-sm z-50">
-      <div className="mb-lg px-sm">
-        <h1 className="text-headline-sm font-bold text-primary">ModelRoom</h1>
-        <p className="text-label-sm text-on-surface-variant mt-xs">v0.1.0</p>
+      <div className="mb-xl px-sm pt-xs">
+        <h1 className="logo-font text-[28px] leading-none text-primary">ModelRoom</h1>
       </div>
-      <ul className="flex flex-col gap-xs flex-1">
+      <ul className="flex flex-col gap-base flex-1">
         {NAV.map(({ label, icon }) => {
           const isActive = label === active;
           return (
@@ -30,15 +29,15 @@ export function Sidebar({
                   onNavigate(label);
                 }}
                 className={
-                  "flex items-center gap-sm px-sm py-2 rounded-lg font-medium transition-colors duration-200 " +
+                  "flex items-center gap-sm px-sm py-2.5 font-medium transition-all duration-200 " +
                   (isActive
-                    ? "bg-primary-container text-on-primary-container"
-                    : "text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50")
+                    ? "bg-primary text-white shadow-sm"
+                    : "text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/60")
                 }
               >
                 <span
                   className={
-                    "material-symbols-outlined text-[20px]" + (isActive ? " fill-icon" : "")
+                    "material-symbols-outlined text-[20px]" + (isActive ? " fill-icon text-white" : "")
                   }
                 >
                   {icon}

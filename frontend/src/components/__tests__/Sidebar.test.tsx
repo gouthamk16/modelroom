@@ -8,7 +8,7 @@ test("renders all nav items with Projects active", () => {
   for (const label of ["Projects", "Datasets", "Models", "Jobs"]) {
     expect(screen.getByText(label)).toBeInTheDocument();
   }
-  expect(screen.getByText("Projects").closest("a")).toHaveClass("bg-primary-container");
+  expect(screen.getByText("Projects").closest("a")).toHaveClass("bg-primary", "text-white");
 });
 
 test("calls onNavigate when a nav item is clicked", async () => {

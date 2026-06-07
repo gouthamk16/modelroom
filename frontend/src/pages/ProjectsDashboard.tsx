@@ -3,23 +3,35 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api/client";
 import type { Project } from "../lib/types";
 
+function formatDate(iso: string): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime())
+    ? ""
+    : d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
 function ProjectCard({ project }: { project: Project }) {
   return (
-    <article className="bg-surface-container-lowest border border-outline-variant rounded-lg p-md flex flex-col gap-sm hover:border-outline hover:shadow-md shadow-sm transition-all cursor-pointer group min-h-[200px]">
-      <div className="flex justify-between items-start border-b border-outline-variant pb-sm mb-xs">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-primary-container" />
-            <h3 className="text-headline-sm text-on-surface group-hover:text-primary font-bold">
-              {project.name}
-            </h3>
-          </div>
-          <p className="text-label-sm text-on-surface-variant text-[11px]">ID: proj_{project.id}</p>
+    <article className="group relative bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col gap-sm shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:border-primary/40 cursor-pointer min-h-[180px]">
+      <div className="flex items-start justify-between">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-primary-container" />
+          <h3 className="text-headline-sm font-bold text-on-surface group-hover:text-primary transition-colors">
+            {project.name}
+          </h3>
         </div>
+        <span className="material-symbols-outlined text-[18px] text-on-surface-variant opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all">
+          arrow_outward
+        </span>
       </div>
-      <p className="text-body-sm text-on-surface-variant">
-        {project.description || "No description"}
+      <p className="text-body-sm text-on-surface-variant flex-1">
+        {project.description || "No description yet."}
       </p>
+      <div className="flex items-center justify-between border-t border-outline-variant/60 pt-sm text-label-sm text-on-surface-variant">
+        <span className="font-mono text-[11px]">proj_{project.id}</span>
+        <span>{formatDate(project.created_at)}</span>
+      </div>
     </article>
   );
 }
@@ -32,59 +44,62 @@ export function ProjectsDashboard() {
     queryFn: api.listProjects,
   });
   const create = useMutation({
-    mutationFn: () => api.createProject({ name }),
+    mutationFn: () => api.createProject({ name: name.trim() }),
     onSuccess: () => {
       setName("");
       qc.invalidateQueries({ queryKey: ["projects"] });
     },
   });
 
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (name.trim() && !create.isPending) create.mutate();
+  };
+
   return (
     <>
-      <div className="flex items-center justify-between gap-md mb-lg">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-md mb-xl">
         <div>
-          <h2 className="text-headline-md text-on-surface">Active Experiments</h2>
-          <p className="text-body-sm text-on-surface-variant mt-xs">
-            Overview of current training runs and project statuses.
+          <h2 className="text-headline-lg text-on-surface">Projects</h2>
+          <p className="text-body-md text-on-surface-variant mt-xs">
+            Each project holds its datasets, models, and training runs.
           </p>
         </div>
-        <form
-          className="flex items-center gap-sm"
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (name.trim()) create.mutate();
-          }}
-        >
+        <form className="flex items-center gap-sm" onSubmit={submit}>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="New project name"
-            className="bg-surface border border-outline-variant rounded px-3 py-2 text-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+            placeholder="Name a new project"
+            className="bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2.5 text-body-sm w-64 transition-all focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-outline"
           />
           <button
             type="submit"
-            className="btn-primary flex items-center gap-2 px-6 py-2 text-body-sm whitespace-nowrap"
+            disabled={!name.trim() || create.isPending}
+            className="btn-primary flex items-center gap-2 px-6 py-2.5 text-body-sm whitespace-nowrap"
           >
-            <span className="material-symbols-outlined text-[18px]">add</span>New Project
+            <span className="material-symbols-outlined text-[18px]">add</span>
+            New Project
           </button>
         </form>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-md">
-        {projects.map((p) => (
-          <ProjectCard key={p.id} project={p} />
-        ))}
-        <div
-          onClick={() => name.trim() && create.mutate()}
-          className="bg-surface-container-lowest border border-dashed border-outline-variant rounded-lg p-md flex flex-col items-center justify-center gap-sm text-on-surface-variant hover:border-primary hover:text-primary transition-all cursor-pointer min-h-[200px]"
-        >
-          <span className="material-symbols-outlined text-4xl mb-2">add_circle</span>
-          <span className="text-headline-sm font-bold">Initialize New Workspace</span>
-          <span className="text-body-sm text-center max-w-[200px]">
-            Start an empty project or clone from registry.
-          </span>
+      {projects.length === 0 ? (
+        <div className="flex flex-col items-center justify-center text-center py-24 gap-sm">
+          <div className="w-16 h-16 rounded-2xl bg-primary-container/15 flex items-center justify-center mb-xs">
+            <span className="material-symbols-outlined text-primary text-[32px]">workspaces</span>
+          </div>
+          <h3 className="text-headline-sm font-bold text-on-surface">Create your first project</h3>
+          <p className="text-body-md text-on-surface-variant max-w-sm">
+            Name a project above and press New Project to get started.
+          </p>
         </div>
-      </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-md">
+          {projects.map((p) => (
+            <ProjectCard key={p.id} project={p} />
+          ))}
+        </div>
+      )}
     </>
   );
 }

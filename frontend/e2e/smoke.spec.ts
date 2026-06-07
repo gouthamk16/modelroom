@@ -4,10 +4,10 @@ const CSV = "age,income,city\n20,3000,NY\n30,5000,LA\n40,7000,NY\n50,9000,SF\n";
 
 test("projects: create a project and see its card", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Active Experiments" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Projects", level: 2 })).toBeVisible();
 
   const name = `E2E Project ${Date.now()}`;
-  await page.getByPlaceholder("New project name").fill(name);
+  await page.getByPlaceholder("Name a new project").fill(name);
   await page.getByRole("button", { name: "New Project" }).click();
 
   await expect(page.getByText(name)).toBeVisible();

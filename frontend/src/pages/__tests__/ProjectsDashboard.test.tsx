@@ -29,7 +29,7 @@ test("lists projects from the API", async () => {
   expect(api.listProjects).toHaveBeenCalled();
 });
 
-test("shows the create-new card", () => {
+test("shows the create button", () => {
   renderPage();
-  expect(screen.getByText("Initialize New Workspace")).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /New Project/ })).toBeInTheDocument();
 });
