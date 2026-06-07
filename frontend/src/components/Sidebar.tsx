@@ -1,3 +1,5 @@
+import { useTheme } from "../lib/useTheme";
+
 const NAV = [
   { label: "Projects", icon: "folder_open" },
   { label: "Datasets", icon: "database" },
@@ -12,6 +14,7 @@ export function Sidebar({
   active: string;
   onNavigate: (label: string) => void;
 }) {
+  const { isDark, toggle } = useTheme();
   return (
     <nav className="bg-surface-container-low fixed left-0 top-0 h-full w-[280px] border-r border-outline-variant flex flex-col py-lg px-md gap-sm z-50">
       <div className="mb-xl px-sm pt-xs">
@@ -48,6 +51,17 @@ export function Sidebar({
           );
         })}
       </ul>
+      <button
+        type="button"
+        onClick={toggle}
+        aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        className="flex items-center gap-sm px-sm py-2.5 font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/60 transition-all duration-200"
+      >
+        <span className="material-symbols-outlined text-[20px]">
+          {isDark ? "light_mode" : "dark_mode"}
+        </span>
+        {isDark ? "Light mode" : "Dark mode"}
+      </button>
     </nav>
   );
 }
