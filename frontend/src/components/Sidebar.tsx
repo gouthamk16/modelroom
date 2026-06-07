@@ -31,7 +31,7 @@ export function Sidebar({
                 className={
                   "flex items-center gap-sm px-sm py-2.5 font-medium transition-all duration-200 " +
                   (isActive
-                    ? "bg-primary text-white shadow-sm"
+                    ? "bg-primary-container text-white shadow-sm"
                     : "text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/60")
                 }
               >

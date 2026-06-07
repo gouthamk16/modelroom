@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
 
 @tailwind base;
@@ -16,22 +16,16 @@ body {
   .btn-primary {
     @apply font-semibold rounded-full transition-all duration-200;
     color: #fff;
-    background: linear-gradient(135deg, rgb(233 90 45 / 0.9), rgb(198 56 24 / 0.82));
-    border: 1px solid rgb(255 255 255 / 0.45);
-    box-shadow:
-      0 8px 30px rgb(198 56 24 / 0.5),
-      inset 0 1px 0 rgb(255 255 255 / 0.55),
-      inset 0 -8px 16px rgb(140 40 14 / 0.3);
-    backdrop-filter: blur(18px) saturate(200%);
-    -webkit-backdrop-filter: blur(18px) saturate(200%);
-    text-shadow: 0 1px 2px rgb(110 28 8 / 0.55);
+    /* Design bright orange (#e86b4d), translucent + frosted, no outer glow. */
+    background: linear-gradient(135deg, rgb(232 107 77 / 0.92), rgb(232 107 77 / 0.82));
+    border: 1px solid rgb(255 255 255 / 0.4);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.5);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    text-shadow: 0 1px 1px rgb(120 30 10 / 0.35);
   }
   .btn-primary:hover {
-    background: linear-gradient(135deg, rgb(240 98 50 / 0.98), rgb(206 60 26 / 0.92));
-    box-shadow:
-      0 12px 36px rgb(214 71 38 / 0.5),
-      inset 0 1px 0 rgb(255 255 255 / 0.65),
-      inset 0 -8px 16px rgb(166 59 33 / 0.25);
+    background: linear-gradient(135deg, rgb(232 107 77 / 1), rgb(226 96 66 / 0.95));
     transform: translateY(-1px);
   }
   .btn-primary:active {
@@ -43,12 +37,12 @@ body {
     transform: none;
   }
 
-  /* Elegant italic display font for the brand mark. */
+  /* Elegant, bold italic display font for the brand mark. */
   .logo-font {
     font-family: "Playfair Display", Georgia, serif;
     font-style: italic;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-weight: 800;
+    letter-spacing: -0.015em;
   }
 }
 
