@@ -1,0 +1,37 @@
+import { test, expect } from "@playwright/test";
+
+const CSV = "age,income,city\n20,3000,NY\n30,5000,LA\n40,7000,NY\n50,9000,SF\n";
+
+test("projects: create a project and see its card", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Active Experiments" })).toBeVisible();
+
+  const name = `E2E Project ${Date.now()}`;
+  await page.getByPlaceholder("New project name").fill(name);
+  await page.getByRole("button", { name: "New Project" }).click();
+
+  await expect(page.getByText(name)).toBeVisible();
+  await page.screenshot({ path: "e2e/screens/projects.png", fullPage: true });
+});
+
+test("datasets: upload a CSV and see preview + visualizations", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "Datasets" }).click();
+  await expect(page.getByRole("heading", { name: "Import Dataset" })).toBeVisible();
+
+  await page.setInputFiles('input[type="file"]', {
+    name: "mr.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from(CSV),
+  });
+  await page.getByRole("button", { name: "Upload CSV" }).click();
+
+  // dataset appears in the list and is auto-selected
+  await expect(page.getByText("mr.csv")).toBeVisible();
+  // preview header cell
+  await expect(page.getByRole("cell", { name: "NY" }).first()).toBeVisible();
+  // correlation heatmap section
+  await expect(page.getByRole("heading", { name: "Correlation" })).toBeVisible();
+
+  await page.screenshot({ path: "e2e/screens/datasets.png", fullPage: true });
+});

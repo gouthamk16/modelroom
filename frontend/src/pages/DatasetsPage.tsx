@@ -42,15 +42,15 @@ export function DatasetsPage() {
     enabled: selectedId != null && histColumn != null,
   });
 
+  const effectiveProject = projectId ?? projects[0]?.id ?? null;
+
   const upload = useMutation({
-    mutationFn: (file: File) => api.uploadDataset(projectId!, file),
+    mutationFn: (file: File) => api.uploadDataset(effectiveProject!, file),
     onSuccess: (ds) => {
       qc.invalidateQueries({ queryKey: ["datasets"] });
       setSelectedId(ds.id);
     },
   });
-
-  const effectiveProject = projectId ?? projects[0]?.id ?? null;
 
   return (
     <div className="grid grid-cols-1 xl:grid-cols-[320px_1fr] gap-md">
