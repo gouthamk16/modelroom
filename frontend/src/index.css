@@ -5,6 +5,64 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background: 251 249 248;
+  --surface: 251 249 248;
+  --surface-container-lowest: 255 255 255;
+  --surface-container-low: 245 243 243;
+  --surface-container: 239 237 237;
+  --surface-container-high: 233 232 231;
+  --surface-container-highest: 228 226 226;
+  --surface-variant: 228 226 226;
+  --surface-dim: 219 218 217;
+  --on-surface: 27 28 28;
+  --on-surface-variant: 87 66 61;
+  --on-background: 27 28 28;
+  --outline: 139 113 107;
+  --outline-variant: 222 192 185;
+  --primary: 166 59 33;
+  --on-primary: 255 255 255;
+  --primary-container: 232 107 77;
+  --on-primary-container: 86 13 0;
+  --secondary: 95 94 94;
+  --secondary-container: 229 226 225;
+  --tertiary: 93 94 96;
+  --error: 186 26 26;
+  --on-error: 255 255 255;
+  --error-container: 255 218 214;
+  --on-error-container: 147 0 10;
+  --inverse-surface: 48 48 49;
+}
+
+.dark {
+  --background: 18 18 18;
+  --surface: 18 18 18;
+  --surface-container-lowest: 24 24 24;
+  --surface-container-low: 30 30 30;
+  --surface-container: 36 36 36;
+  --surface-container-high: 42 42 42;
+  --surface-container-highest: 48 48 48;
+  --surface-variant: 42 42 42;
+  --surface-dim: 18 18 18;
+  --on-surface: 235 235 235;
+  --on-surface-variant: 180 175 175;
+  --on-background: 235 235 235;
+  --outline: 90 90 90;
+  --outline-variant: 60 60 60;
+  --primary: 240 120 95;
+  --on-primary: 255 255 255;
+  --primary-container: 232 107 77;
+  --on-primary-container: 255 233 226;
+  --secondary: 170 168 168;
+  --secondary-container: 54 52 52;
+  --tertiary: 170 171 173;
+  --error: 255 138 128;
+  --on-error: 80 0 4;
+  --error-container: 120 20 20;
+  --on-error-container: 255 218 214;
+  --inverse-surface: 235 235 235;
+}
+
 body {
   @apply bg-background text-on-background antialiased;
   font-family: "Manrope", system-ui, sans-serif;
@@ -52,6 +110,23 @@ body {
 }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #fbf9f8; }
-::-webkit-scrollbar-thumb { background: #e4e2e2; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #dec0b9; }
+::-webkit-scrollbar-track { background: rgb(var(--surface)); }
+::-webkit-scrollbar-thumb { background: rgb(var(--surface-variant)); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgb(var(--outline-variant)); }
+
+/* React Flow surfaces that ship light by default. */
+.dark .react-flow__controls button {
+  background: rgb(var(--surface-container-high));
+  border-bottom: 1px solid rgb(var(--outline-variant));
+  color: rgb(var(--on-surface));
+}
+.dark .react-flow__controls button:hover {
+  background: rgb(var(--surface-container-highest));
+}
+.dark .react-flow__controls button svg {
+  fill: rgb(var(--on-surface));
+}
+.dark .react-flow__attribution {
+  background: rgb(var(--surface-container) / 0.6);
+  color: rgb(var(--on-surface-variant));
+}
