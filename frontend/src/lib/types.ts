@@ -38,6 +38,7 @@ export interface Histogram {
 export interface Correlation {
   columns: string[];
   matrix: number[][];
+  omitted?: number;
 }
 
 export interface PipelineStep {
@@ -132,6 +133,15 @@ export interface RunSummary {
   final_val_loss?: number;
 }
 
+export interface RunEval {
+  task: string;
+  accuracy?: number;
+  labels?: string[];
+  confusion_matrix?: number[][];
+  per_class?: { label: string; precision: number; recall: number; f1: number; support: number }[];
+  mse?: number;
+}
+
 export interface Run {
   id: number;
   project_id: number;
@@ -140,6 +150,9 @@ export interface Run {
   last_epoch: number;
   config: RunConfig;
   summary: RunSummary;
+  started_at?: string | null;
+  finished_at?: string | null;
   metrics?: RunMetricPoint[];
   log?: string;
+  eval?: RunEval | null;
 }

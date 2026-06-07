@@ -79,6 +79,13 @@ export function DatasetsPage() {
       setSelectedId(ds.id);
     },
   });
+  const loadSample = useMutation({
+    mutationFn: () => api.loadSample("mnist"),
+    onSuccess: (ds) => {
+      qc.invalidateQueries({ queryKey: ["datasets"] });
+      setSelectedId(ds.id);
+    },
+  });
 
   return (
     <>
@@ -96,7 +103,16 @@ export function DatasetsPage() {
           title="Upload your first dataset"
           description="Add a CSV to preview, visualize, and preprocess it."
         >
-          <UploadControl onUpload={(f) => upload.mutate(f)} pending={upload.isPending} align="center" />
+          <div className="flex flex-col items-center gap-sm">
+            <UploadControl onUpload={(f) => upload.mutate(f)} pending={upload.isPending} align="center" />
+            <button
+              onClick={() => loadSample.mutate()}
+              disabled={loadSample.isPending}
+              className="text-body-sm text-primary hover:underline disabled:opacity-50"
+            >
+              {loadSample.isPending ? "Loading MNIST…" : "or load the MNIST sample"}
+            </button>
+          </div>
         </EmptyState>
       ) : (
         <div className="grid grid-cols-1 xl:grid-cols-[320px_1fr] gap-md">

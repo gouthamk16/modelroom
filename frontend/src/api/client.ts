@@ -40,6 +40,8 @@ export const api = {
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     return (await res.json()) as Dataset;
   },
+  loadSample: (name: string) =>
+    request<Dataset>(`/datasets/samples/${name}`, { method: "POST" }),
   datasetSchema: (id: number) => request<SchemaColumn[]>(`/datasets/${id}/schema`),
   datasetPreview: (id: number) => request<Preview>(`/datasets/${id}/preview`),
   datasetHistogram: (id: number, column: string) =>

@@ -10,7 +10,14 @@ export function CorrelationHeatmap({ correlation }: { correlation: Correlation }
   if (columns.length < 2) return null;
   return (
     <div className="border border-outline-variant rounded-lg p-md bg-surface-container-lowest overflow-x-auto">
-      <h3 className="text-label-md uppercase text-on-surface-variant mb-sm">Correlation</h3>
+      <h3 className="text-label-md uppercase text-on-surface-variant mb-sm">
+        Correlation
+        {correlation.omitted ? (
+          <span className="ml-2 normal-case text-on-surface-variant/80">
+            (first {correlation.columns.length} of many columns)
+          </span>
+        ) : null}
+      </h3>
       <div
         className="grid gap-[2px]"
         style={{ gridTemplateColumns: `120px repeat(${columns.length}, 48px)` }}

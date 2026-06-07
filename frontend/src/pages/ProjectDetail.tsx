@@ -34,9 +34,24 @@ export function ProjectDetail({
     queryKey: ["models", projectId],
     queryFn: () => api.listModels(projectId),
   });
+  const { data: runs = [] } = useQuery({
+    queryKey: ["runs", projectId],
+    queryFn: () => api.listRuns(projectId),
+  });
   const datasetsUsed = new Set(
     models.map((m) => m.dataset_id).filter((id): id is number => id != null)
   ).size;
+
+  const best = runs
+    .filter((r) => r.summary.best_val_acc != null)
+    .sort((a, b) => (b.summary.best_val_acc ?? 0) - (a.summary.best_val_acc ?? 0))[0];
+  const bestModelName = best ? models.find((m) => m.id === best.model_id)?.name : undefined;
+  const gpuHours =
+    runs.reduce((sum, r) => {
+      if (!r.started_at || !r.finished_at) return sum;
+      return sum + (new Date(r.finished_at).getTime() - new Date(r.started_at).getTime());
+    }, 0) /
+    3_600_000;
 
   return (
     <>
@@ -61,10 +76,13 @@ export function ProjectDetail({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-md mb-lg">
         <Stat label="Models" value={String(models.length)} />
         <Stat label="Datasets used" value={String(datasetsUsed)} />
-        <Stat label="Training runs" value="0" hint="after training (Phase 5)" />
-        <Stat label="GPU hours" value="—" hint="after training (Phase 5)" />
-        <Stat label="Best model" value="—" hint="needs a completed run" />
-        <Stat label="Best accuracy" value="—" hint="needs a completed run" />
+        <Stat label="Training runs" value={String(runs.length)} />
+        <Stat label="GPU hours" value={gpuHours > 0 ? gpuHours.toFixed(2) : "—"} />
+        <Stat label="Best model" value={bestModelName ?? "—"} hint={best ? `run #${best.id}` : "needs a run"} />
+        <Stat
+          label="Best accuracy"
+          value={best?.summary.best_val_acc != null ? best.summary.best_val_acc.toFixed(4) : "—"}
+        />
         <Stat
           label="Created"
           value={
