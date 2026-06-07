@@ -10,13 +10,15 @@ import { ProcessingPanel } from "../components/datasets/ProcessingPanel";
 function UploadControl({
   onUpload,
   pending,
+  align = "start",
 }: {
   onUpload: (file: File) => void;
   pending: boolean;
+  align?: "start" | "center";
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
   return (
-    <div className="flex flex-col items-start gap-sm">
+    <div className={"flex flex-col gap-sm " + (align === "center" ? "items-center" : "items-start")}>
       <input
         ref={fileRef}
         type="file"
@@ -92,7 +94,7 @@ export function DatasetsPage() {
           title="Upload your first dataset"
           description="Add a CSV to preview, visualize, and preprocess it."
         >
-          <UploadControl onUpload={(f) => upload.mutate(f)} pending={upload.isPending} />
+          <UploadControl onUpload={(f) => upload.mutate(f)} pending={upload.isPending} align="center" />
         </EmptyState>
       ) : (
         <div className="grid grid-cols-1 xl:grid-cols-[320px_1fr] gap-md">
