@@ -1,11 +1,15 @@
-import type { GraphNode } from "../../lib/types";
+export interface SelectedLayer {
+  id: string;
+  type: string;
+  params: Record<string, number>;
+}
 
 export function PropertiesPanel({
   node,
   onChange,
   onRemove,
 }: {
-  node: GraphNode | null;
+  node: SelectedLayer | null;
   onChange: (id: string, params: Record<string, number>) => void;
   onRemove: (id: string) => void;
 }) {

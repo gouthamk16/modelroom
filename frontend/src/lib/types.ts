@@ -82,10 +82,18 @@ export interface GraphNode {
   id: string;
   type: LayerType;
   params: Record<string, number>;
+  x: number;
+  y: number;
+}
+
+export interface GraphEdge {
+  source: string;
+  target: string;
 }
 
 export interface ModelGraph {
   nodes: GraphNode[];
+  edges: GraphEdge[];
   input_features: number | null;
 }
 

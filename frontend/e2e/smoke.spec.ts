@@ -65,18 +65,22 @@ test("preprocessing: build a pipeline and apply it", async ({ page }) => {
   await page.screenshot({ path: "e2e/screens/preprocessing.png", fullPage: true });
 });
 
-test("model builder: add a layer, validate, and save", async ({ page }) => {
+test("model builder: validate starter, add a node, get validation feedback", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: "Models" }).click();
 
   await expect(page.getByText("INPUT")).toBeVisible();
   await expect(page.getByText("OUTPUT")).toBeVisible();
 
-  await page.getByRole("button", { name: "+ linear" }).click();
-  await expect(page.getByText("LINEAR", { exact: true })).toBeVisible();
-
+  // starter input -> output is a valid graph
   await page.getByRole("button", { name: "Validate Architecture" }).click();
   await expect(page.getByText(/parameters/)).toBeVisible();
+
+  // adding a disconnected layer should be flagged on next validation
+  await page.getByRole("button", { name: "+ linear" }).click();
+  await expect(page.getByText("LINEAR", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Validate Architecture" }).click();
+  await expect(page.getByText(/not connected/i)).toBeVisible();
 
   await page.screenshot({ path: "e2e/screens/model-builder.png", fullPage: true });
 });

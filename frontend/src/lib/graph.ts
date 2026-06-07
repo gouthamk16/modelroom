@@ -1,6 +1,16 @@
-import type { GraphNode, LayerType, ModelGraph } from "./types";
+import type { Edge, Node } from "@xyflow/react";
+import type { LayerType, ModelGraph } from "./types";
 
-const DEFAULT_PARAMS: Record<LayerType, Record<string, number>> = {
+export interface LayerNodeData extends Record<string, unknown> {
+  type: LayerType;
+  params: Record<string, number>;
+  outShape?: number[];
+  error?: string | null;
+}
+
+export type LayerNode = Node<LayerNodeData>;
+
+export const DEFAULT_PARAMS: Record<LayerType, Record<string, number>> = {
   input: { features: 8 },
   linear: { out_features: 16 },
   relu: {},
@@ -10,53 +20,54 @@ const DEFAULT_PARAMS: Record<LayerType, Record<string, number>> = {
 };
 
 let seq = 0;
-function newId(type: LayerType): string {
+
+export function makeNode(type: LayerType, position: { x: number; y: number }): LayerNode {
   seq += 1;
-  return `${type}_${seq}`;
+  return {
+    id: `${type}_${seq}`,
+    type: "layer",
+    position,
+    data: { type, params: { ...DEFAULT_PARAMS[type] } },
+    deletable: type !== "input" && type !== "output",
+  };
 }
 
-export function defaultGraph(features: number, classes: number): ModelGraph {
+export function initialFlow(): { nodes: LayerNode[]; edges: Edge[] } {
   return {
     nodes: [
-      { id: "input", type: "input", params: { features } },
-      { id: "output", type: "output", params: { classes } },
+      {
+        id: "input",
+        type: "layer",
+        position: { x: 60, y: 160 },
+        data: { type: "input", params: { features: 8 } },
+        deletable: false,
+      },
+      {
+        id: "output",
+        type: "layer",
+        position: { x: 460, y: 160 },
+        data: { type: "output", params: { classes: 2 } },
+        deletable: false,
+      },
     ],
-    input_features: features,
+    edges: [{ id: "input-output", source: "input", target: "output" }],
   };
 }
 
-export function addLayer(graph: ModelGraph, type: LayerType): ModelGraph {
-  const node: GraphNode = { id: newId(type), type, params: { ...DEFAULT_PARAMS[type] } };
-  const outIdx = graph.nodes.findIndex((n) => n.type === "output");
-  const insertAt = outIdx === -1 ? graph.nodes.length : outIdx;
-  const nodes = [...graph.nodes.slice(0, insertAt), node, ...graph.nodes.slice(insertAt)];
-  return { ...graph, nodes };
-}
-
-export function removeLayer(graph: ModelGraph, id: string): ModelGraph {
-  if (id === "input" || id === "output") return graph;
-  return { ...graph, nodes: graph.nodes.filter((n) => n.id !== id) };
-}
-
-export function updateParams(
-  graph: ModelGraph,
-  id: string,
-  params: Record<string, number>
+export function toGraphPayload(
+  nodes: LayerNode[],
+  edges: Edge[],
+  inputFeatures: number | null
 ): ModelGraph {
   return {
-    ...graph,
-    nodes: graph.nodes.map((n) =>
-      n.id === id ? { ...n, params: { ...n.params, ...params } } : n
-    ),
+    nodes: nodes.map((n) => ({
+      id: n.id,
+      type: n.data.type,
+      params: n.data.params,
+      x: n.position.x,
+      y: n.position.y,
+    })),
+    edges: edges.map((e) => ({ source: e.source, target: e.target })),
+    input_features: inputFeatures,
   };
-}
-
-export function chainEdges(
-  nodes: GraphNode[]
-): { id: string; source: string; target: string }[] {
-  return nodes.slice(0, -1).map((n, i) => ({
-    id: `${n.id}-${nodes[i + 1].id}`,
-    source: n.id,
-    target: nodes[i + 1].id,
-  }));
 }

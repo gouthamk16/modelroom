@@ -1,37 +1,28 @@
 import { describe, expect, test } from "vitest";
-import { defaultGraph, addLayer, removeLayer, updateParams, chainEdges } from "../graph";
+import { makeNode, initialFlow, toGraphPayload } from "../graph";
 
 describe("graph helpers", () => {
-  test("defaultGraph has input then output", () => {
-    const g = defaultGraph(8, 2);
-    expect(g.nodes.map((n) => n.type)).toEqual(["input", "output"]);
-    expect(g.nodes[0].params.features).toBe(8);
-    expect(g.nodes[1].params.classes).toBe(2);
+  test("initialFlow has input and output connected", () => {
+    const { nodes, edges } = initialFlow();
+    expect(nodes.map((n) => n.data.type)).toEqual(["input", "output"]);
+    expect(edges).toHaveLength(1);
+    expect(edges[0]).toMatchObject({ source: "input", target: "output" });
+    expect(nodes[0].deletable).toBe(false);
   });
 
-  test("addLayer inserts before output", () => {
-    const g = addLayer(defaultGraph(8, 2), "linear");
-    expect(g.nodes.map((n) => n.type)).toEqual(["input", "linear", "output"]);
+  test("makeNode gives unique ids, default params, and is deletable", () => {
+    const a = makeNode("linear", { x: 0, y: 0 });
+    const b = makeNode("linear", { x: 0, y: 0 });
+    expect(a.id).not.toBe(b.id);
+    expect(a.data.params.out_features).toBe(16);
+    expect(a.deletable).toBe(true);
   });
 
-  test("removeLayer drops by id and keeps input/output", () => {
-    const g = addLayer(defaultGraph(8, 2), "linear");
-    const linId = g.nodes[1].id;
-    const g2 = removeLayer(g, linId);
-    expect(g2.nodes.map((n) => n.type)).toEqual(["input", "output"]);
-  });
-
-  test("updateParams sets a numeric param", () => {
-    const g = addLayer(defaultGraph(8, 2), "linear");
-    const linId = g.nodes[1].id;
-    const g2 = updateParams(g, linId, { out_features: 32 });
-    expect(g2.nodes[1].params.out_features).toBe(32);
-  });
-
-  test("chainEdges connects consecutive nodes", () => {
-    const g = addLayer(defaultGraph(8, 2), "linear");
-    const edges = chainEdges(g.nodes);
-    expect(edges).toHaveLength(2);
-    expect(edges[0]).toMatchObject({ source: g.nodes[0].id, target: g.nodes[1].id });
+  test("toGraphPayload maps nodes (with positions), edges, and input features", () => {
+    const { nodes, edges } = initialFlow();
+    const payload = toGraphPayload(nodes, edges, 12);
+    expect(payload.input_features).toBe(12);
+    expect(payload.nodes[0]).toMatchObject({ id: "input", type: "input", x: 60, y: 160 });
+    expect(payload.edges).toEqual([{ source: "input", target: "output" }]);
   });
 });

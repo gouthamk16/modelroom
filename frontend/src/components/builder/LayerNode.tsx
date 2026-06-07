@@ -1,5 +1,6 @@
 import { Handle, Position } from "@xyflow/react";
 import type { NodeProps } from "@xyflow/react";
+import type { LayerNodeData } from "../../lib/graph";
 
 const LABELS: Record<string, string> = {
   input: "INPUT",
@@ -11,12 +12,7 @@ const LABELS: Record<string, string> = {
 };
 
 export function LayerNode({ data, selected }: NodeProps) {
-  const d = data as {
-    type: string;
-    params: Record<string, number>;
-    outShape?: number[];
-    error?: string | null;
-  };
+  const d = data as LayerNodeData;
   const accent = d.type === "input" || d.type === "output";
   return (
     <div

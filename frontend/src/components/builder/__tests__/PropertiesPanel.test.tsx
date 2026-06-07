@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import { PropertiesPanel } from "../PropertiesPanel";
-import type { GraphNode } from "../../../lib/types";
+import type { SelectedLayer } from "../PropertiesPanel";
 
-const linear: GraphNode = { id: "l1", type: "linear", params: { out_features: 16 } };
+const linear: SelectedLayer = { id: "l1", type: "linear", params: { out_features: 16 } };
 
 test("edits a numeric param and reports change", () => {
   const onChange = vi.fn();
