@@ -4,6 +4,7 @@ import { ProjectsDashboard } from "./pages/ProjectsDashboard";
 import { ProjectDetail } from "./pages/ProjectDetail";
 import { DatasetsPage } from "./pages/DatasetsPage";
 import { ModelsPage } from "./pages/ModelsPage";
+import { JobsPage } from "./pages/JobsPage";
 
 type Route = { name: string; projectId?: number };
 
@@ -17,6 +18,8 @@ export default function App() {
         <DatasetsPage />
       ) : route.name === "Models" ? (
         <ModelsPage />
+      ) : route.name === "Jobs" ? (
+        <JobsPage />
       ) : route.name === "ProjectDetail" && route.projectId != null ? (
         <ProjectDetail
           projectId={route.projectId}

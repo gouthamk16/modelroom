@@ -16,6 +16,8 @@ import type { LayerNode as LayerNodeT } from "../lib/graph";
 import type { LayerType, ModelSummary, ShapeReport } from "../lib/types";
 import { LayerNode } from "../components/builder/LayerNode";
 import { PropertiesPanel } from "../components/builder/PropertiesPanel";
+import { TrainPanel } from "../components/training/TrainPanel";
+import { RunView } from "../components/training/RunView";
 
 const PALETTE: LayerType[] = ["linear", "relu", "dropout", "batchnorm1d"];
 const nodeTypes = { layer: LayerNode };
@@ -35,6 +37,8 @@ export function ModelBuilder({
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initial.edges);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [report, setReport] = useState<ShapeReport | null>(null);
+  const [trainOpen, setTrainOpen] = useState(false);
+  const [runId, setRunId] = useState<number | null>(null);
 
   const validate = useMutation({
     mutationFn: () => api.validateModel(toGraphPayload(nodes, edges, null)),
@@ -74,8 +78,28 @@ export function ModelBuilder({
     ? { id: selectedNode.id, type: selectedNode.data.type, params: selectedNode.data.params }
     : null;
 
+  if (runId !== null) {
+    return <RunView runId={runId} onBack={() => setRunId(null)} />;
+  }
+
   return (
     <div className="grid grid-cols-[1fr_320px] gap-md h-[calc(100vh-8rem)]">
+      {trainOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-md"
+          onClick={() => setTrainOpen(false)}
+        >
+          <div className="w-[460px] max-w-full" onClick={(e) => e.stopPropagation()}>
+            <TrainPanel
+              modelId={model.id}
+              onStarted={(rid) => {
+                setTrainOpen(false);
+                setRunId(rid);
+              }}
+            />
+          </div>
+        </div>
+      )}
       <div className="flex flex-col gap-sm min-h-0">
         <div className="flex items-center gap-sm">
           <button
@@ -98,8 +122,14 @@ export function ModelBuilder({
             >
               Validate Architecture
             </button>
-            <button onClick={() => save.mutate()} className="btn-primary px-5 py-1.5 text-body-sm">
+            <button
+              onClick={() => save.mutate()}
+              className="px-5 py-1.5 border border-outline-variant text-on-surface rounded-full text-body-sm font-semibold hover:bg-surface-variant/50"
+            >
               {save.isSuccess ? "Saved" : "Save Model"}
+            </button>
+            <button onClick={() => setTrainOpen(true)} className="btn-primary px-5 py-1.5 text-body-sm">
+              Train
             </button>
           </div>
         </div>

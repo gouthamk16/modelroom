@@ -66,7 +66,10 @@ export const api = {
     }),
   listModels: (projectId: number) =>
     request<ModelSummary[]>(`/projects/${projectId}/models`),
-  createModel: (projectId: number, body: { name: string; dataset_id: number | null }) =>
+  createModel: (
+    projectId: number,
+    body: { name: string; dataset_id: number | null; graph?: ModelGraph }
+  ) =>
     request<ModelSummary>(`/projects/${projectId}/models`, {
       method: "POST",
       body: JSON.stringify(body),

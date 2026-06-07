@@ -35,6 +35,16 @@ export function ModelsPage() {
     },
   });
 
+  const duplicate = useMutation({
+    mutationFn: (m: ModelSummary) =>
+      api.createModel(effectiveProject!, {
+        name: `${m.name} v2`,
+        dataset_id: m.dataset_id,
+        graph: m.graph,
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["models", effectiveProject] }),
+  });
+
   const datasetName = (id: number | null) =>
     id == null ? undefined : datasets.find((d) => d.id === id)?.name;
 
@@ -129,23 +139,30 @@ export function ModelsPage() {
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-md">
               {models.map((m) => (
-                <button
+                <div
                   key={m.id}
                   onClick={() => setOpenModel(m)}
-                  className="group text-left bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/40"
+                  className="group cursor-pointer bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/40"
                 >
                   <div className="flex items-center justify-between">
                     <h4 className="text-headline-sm font-bold text-on-surface group-hover:text-primary transition-colors">
                       {m.name}
                     </h4>
-                    <span className="material-symbols-outlined text-[18px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
-                      arrow_outward
-                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        duplicate.mutate(m);
+                      }}
+                      title="Duplicate as a new version"
+                      className="material-symbols-outlined text-[18px] text-on-surface-variant hover:text-primary"
+                    >
+                      content_copy
+                    </button>
                   </div>
                   <p className="text-label-sm text-on-surface-variant mt-xs">
                     {(m.graph?.nodes?.length ?? 0)} layers · {datasetName(m.dataset_id) ?? "no dataset"}
                   </p>
-                </button>
+                </div>
               ))}
             </div>
           )}
