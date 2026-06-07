@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api/client";
 import type { Project } from "../lib/types";
+import { EmptyState } from "../components/EmptyState";
 
 function formatDate(iso: string): string {
   if (!iso) return "";
@@ -91,15 +92,11 @@ export function ProjectsDashboard({
       </div>
 
       {projects.length === 0 ? (
-        <div className="flex flex-col items-center justify-center text-center py-24 gap-sm">
-          <div className="w-16 h-16 rounded-2xl bg-primary-container/15 flex items-center justify-center mb-xs">
-            <span className="material-symbols-outlined text-primary text-[32px]">workspaces</span>
-          </div>
-          <h3 className="text-headline-sm font-bold text-on-surface">Create your first project</h3>
-          <p className="text-body-md text-on-surface-variant max-w-sm">
-            Name a project above and press New Project to get started.
-          </p>
-        </div>
+        <EmptyState
+          icon="workspaces"
+          title="Create your first project"
+          description="Name a project above and press New Project to get started."
+        />
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-md">
           {projects.map((p) => (

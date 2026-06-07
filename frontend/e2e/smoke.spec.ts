@@ -17,7 +17,7 @@ test("projects: create a project and see its card", async ({ page }) => {
 test("datasets: upload a CSV and see preview + visualizations", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: "Datasets" }).click();
-  await expect(page.getByRole("heading", { name: "Import Dataset" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Upload your first dataset" })).toBeVisible();
 
   await page.setInputFiles('input[type="file"]', {
     name: "mr.csv",

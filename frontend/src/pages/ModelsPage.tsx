@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api/client";
 import type { ModelSummary } from "../lib/types";
+import { EmptyState } from "../components/EmptyState";
 import { ModelBuilder } from "./ModelBuilder";
 
 export function ModelsPage() {
@@ -38,7 +39,6 @@ export function ModelsPage() {
   const datasetName = (id: number | null) =>
     id == null ? undefined : datasets.find((d) => d.id === id)?.name;
 
-  // keep selected dataset valid for the chosen project
   useEffect(() => {
     setDatasetId(null);
   }, [effectiveProject]);
@@ -59,7 +59,7 @@ export function ModelsPage() {
         <div>
           <h2 className="text-headline-lg text-on-surface">Models</h2>
           <p className="text-body-md text-on-surface-variant mt-xs">
-            Pick a project, choose a training dataset, and design a model.
+            Design networks visually and validate them before training.
           </p>
         </div>
         <label className="flex items-center gap-sm text-label-md uppercase text-on-surface-variant">
@@ -80,72 +80,77 @@ export function ModelsPage() {
       </div>
 
       {effectiveProject == null ? (
-        <div className="text-body-md text-on-surface-variant">
-          Create a project first (Projects tab), then come back to build models.
-        </div>
+        <EmptyState
+          icon="hub"
+          title="No projects yet"
+          description="Create a project in the Projects tab to start building models."
+        />
       ) : (
-        <div className="grid grid-cols-1 xl:grid-cols-[360px_1fr] gap-md">
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col gap-sm h-fit">
-            <h3 className="text-headline-sm font-bold text-on-surface">New model</h3>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Model name"
-              className="bg-surface border border-outline-variant rounded-lg px-4 py-2.5 text-body-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-            />
-            <label className="text-label-md uppercase text-on-surface-variant">Training dataset</label>
-            <select
-              value={datasetId ?? ""}
-              onChange={(e) => setDatasetId(e.target.value ? Number(e.target.value) : null)}
-              className="bg-surface border border-outline-variant rounded-lg px-4 py-2.5 text-body-sm"
-            >
-              <option value="">None (choose later)</option>
-              {datasets.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.name}
-                </option>
-              ))}
-            </select>
+        <>
+          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col sm:flex-row sm:items-end gap-sm mb-md">
+            <div className="flex-1">
+              <label className="text-label-md uppercase text-on-surface-variant">Model name</label>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Model name"
+                className="mt-xs w-full bg-surface border border-outline-variant rounded-lg px-4 py-2.5 text-body-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
+            <div className="flex-1">
+              <label className="text-label-md uppercase text-on-surface-variant">Training dataset</label>
+              <select
+                value={datasetId ?? ""}
+                onChange={(e) => setDatasetId(e.target.value ? Number(e.target.value) : null)}
+                className="mt-xs w-full bg-surface border border-outline-variant rounded-lg px-4 py-2.5 text-body-sm"
+              >
+                <option value="">None (choose later)</option>
+                {datasets.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.name}
+                  </option>
+                ))}
+              </select>
+            </div>
             <button
               disabled={!name.trim() || create.isPending}
               onClick={() => create.mutate()}
-              className="btn-primary px-6 py-2.5 text-body-sm mt-xs"
+              className="btn-primary px-6 py-2.5 text-body-sm whitespace-nowrap"
             >
               Create model
             </button>
           </div>
 
-          <div className="flex flex-col gap-sm">
-            {models.length === 0 ? (
-              <div className="text-body-md text-on-surface-variant py-lg">
-                No models in this project yet. Name one on the left to start.
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-md">
-                {models.map((m) => (
-                  <button
-                    key={m.id}
-                    onClick={() => setOpenModel(m)}
-                    className="group text-left bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/40"
-                  >
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-headline-sm font-bold text-on-surface group-hover:text-primary transition-colors">
-                        {m.name}
-                      </h4>
-                      <span className="material-symbols-outlined text-[18px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
-                        arrow_outward
-                      </span>
-                    </div>
-                    <p className="text-label-sm text-on-surface-variant mt-xs">
-                      {(m.graph?.nodes?.length ?? 0)} layers ·{" "}
-                      {datasetName(m.dataset_id) ?? "no dataset"}
-                    </p>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+          {models.length === 0 ? (
+            <EmptyState
+              icon="hub"
+              title="No models yet"
+              description="Name a model above and create it to open the visual builder."
+            />
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-md">
+              {models.map((m) => (
+                <button
+                  key={m.id}
+                  onClick={() => setOpenModel(m)}
+                  className="group text-left bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/40"
+                >
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-headline-sm font-bold text-on-surface group-hover:text-primary transition-colors">
+                      {m.name}
+                    </h4>
+                    <span className="material-symbols-outlined text-[18px] text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
+                      arrow_outward
+                    </span>
+                  </div>
+                  <p className="text-label-sm text-on-surface-variant mt-xs">
+                    {(m.graph?.nodes?.length ?? 0)} layers · {datasetName(m.dataset_id) ?? "no dataset"}
+                  </p>
+                </button>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </>
   );

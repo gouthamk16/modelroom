@@ -44,7 +44,9 @@ test("lists datasets", async () => {
   expect(api.listDatasets).toHaveBeenCalled();
 });
 
-test("shows the import heading", () => {
+test("shows the upload control", async () => {
   renderPage();
-  expect(screen.getByText("Import Dataset")).toBeInTheDocument();
+  await waitFor(() =>
+    expect(screen.getByRole("button", { name: "Upload CSV" })).toBeInTheDocument()
+  );
 });
