@@ -16,17 +16,11 @@ def _load(dataset_id: int, session: Session):
     return ds, store.load_df(dataset_id)
 
 
-@router.post("/datasets", response_model=DatasetRead, status_code=status.HTTP_201_CREATED)
-async def upload_dataset(
-    file: UploadFile = File(...),
-    session: Session = Depends(get_session),
-):
-    content = await file.read()
-    ds = Dataset(name=file.filename, filename=file.filename)
+def _create_dataset(name: str, content: bytes, session: Session) -> Dataset:
+    ds = Dataset(name=name, filename=name)
     session.add(ds)
     session.commit()
     session.refresh(ds)
-
     store.save_csv(ds.id, content)
     df = store.load_df(ds.id)
     ds.n_rows = int(len(df))
@@ -36,6 +30,31 @@ async def upload_dataset(
     session.commit()
     session.refresh(ds)
     return ds
+
+
+@router.post("/datasets", response_model=DatasetRead, status_code=status.HTTP_201_CREATED)
+async def upload_dataset(
+    file: UploadFile = File(...),
+    session: Session = Depends(get_session),
+):
+    content = await file.read()
+    return _create_dataset(file.filename, content, session)
+
+
+@router.post(
+    "/datasets/samples/{name}",
+    response_model=DatasetRead,
+    status_code=status.HTTP_201_CREATED,
+)
+def load_sample(name: str, session: Session = Depends(get_session)):
+    from app.datasets import samples
+
+    spec = samples.SAMPLES.get(name)
+    if spec is None:
+        raise HTTPException(status_code=404, detail="Unknown sample")
+    df = spec["loader"]()
+    content = df.to_csv(index=False).encode()
+    return _create_dataset(spec["filename"], content, session)
 
 
 @router.get("/datasets", response_model=list[DatasetRead])

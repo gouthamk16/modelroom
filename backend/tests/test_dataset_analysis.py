@@ -50,3 +50,10 @@ def test_correlation_only_numeric():
     corr = analysis.correlation(df)
     assert corr["columns"] == ["a", "b"]
     assert corr["matrix"][0][1] == 1.0
+
+
+def test_correlation_caps_wide_datasets():
+    df = pd.DataFrame({f"c{i}": range(5) for i in range(50)})
+    corr = analysis.correlation(df, max_cols=10)
+    assert len(corr["columns"]) == 10
+    assert corr["omitted"] == 40

@@ -89,10 +89,13 @@ def histogram(df: pd.DataFrame, column: str, bins: int = 10) -> dict:
     }
 
 
-def correlation(df: pd.DataFrame) -> dict:
+def correlation(df: pd.DataFrame, max_cols: int = 40) -> dict:
     num = df.select_dtypes(include="number")
+    omitted = max(0, num.shape[1] - max_cols)
+    num = num.iloc[:, :max_cols]
     corr = num.corr().fillna(0.0)
     return {
         "columns": [str(c) for c in corr.columns],
         "matrix": [[round(float(v), 3) for v in row] for row in corr.values],
+        "omitted": omitted,
     }

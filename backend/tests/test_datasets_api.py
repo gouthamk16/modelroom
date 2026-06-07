@@ -34,3 +34,21 @@ def test_upload_then_fetch_metadata_and_views(client, monkeypatch, tmp_path):
 
 def test_missing_dataset_404(client):
     assert client.get("/api/datasets/999/schema").status_code == 404
+
+
+def test_load_sample(client, monkeypatch, tmp_path):
+    monkeypatch.setenv("MODELROOM_WORKSPACE", str(tmp_path))
+    import pandas as pd
+
+    from app.datasets import samples
+
+    monkeypatch.setitem(
+        samples.SAMPLES["mnist"],
+        "loader",
+        lambda: pd.DataFrame({"px0": [1, 2, 3], "px1": [4, 5, 6], "label": [0, 1, 0]}),
+    )
+    res = client.post("/api/datasets/samples/mnist")
+    assert res.status_code == 201
+    assert res.json()["n_cols"] == 3
+    assert res.json()["n_rows"] == 3
+    assert client.post("/api/datasets/samples/nope").status_code == 404
