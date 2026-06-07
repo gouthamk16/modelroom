@@ -14,7 +14,7 @@ export function TopBar({ title }: { title: string }) {
         <button className="px-5 py-1.5 border border-outline-variant text-on-surface hover:bg-surface-variant/50 rounded-full uppercase font-semibold text-label-sm shadow-sm">
           Export
         </button>
-        <button className="px-5 py-1.5 bg-primary text-on-primary font-bold rounded-full uppercase text-label-sm shadow-sm hover:brightness-110">
+        <button className="btn-primary px-5 py-1.5 uppercase text-label-sm">
           Deploy
         </button>
       </div>

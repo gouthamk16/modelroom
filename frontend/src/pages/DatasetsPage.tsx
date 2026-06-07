@@ -75,7 +75,7 @@ export function DatasetsPage() {
               const f = fileRef.current?.files?.[0];
               if (f && effectiveProject) upload.mutate(f);
             }}
-            className="px-6 py-2 bg-primary text-on-primary rounded-full font-semibold text-body-sm hover:brightness-110"
+            className="btn-primary px-6 py-2 text-body-sm"
           >
             Upload CSV
           </button>

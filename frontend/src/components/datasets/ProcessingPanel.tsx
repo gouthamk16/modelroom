@@ -90,7 +90,7 @@ export function ProcessingPanel({
       <button
         disabled={!target || apply.isPending}
         onClick={() => apply.mutate()}
-        className="px-6 py-2 bg-primary text-on-primary rounded-full font-semibold text-body-sm hover:brightness-110 disabled:opacity-50"
+        className="btn-primary px-6 py-2 text-body-sm"
       >
         Apply Pipeline
       </button>

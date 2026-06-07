@@ -63,7 +63,7 @@ export function ProjectsDashboard() {
           />
           <button
             type="submit"
-            className="flex items-center gap-2 px-6 py-2 bg-primary text-on-primary rounded-full shadow-sm hover:brightness-110 font-semibold text-body-sm whitespace-nowrap"
+            className="btn-primary flex items-center gap-2 px-6 py-2 text-body-sm whitespace-nowrap"
           >
             <span className="material-symbols-outlined text-[18px]">add</span>New Project
           </button>
