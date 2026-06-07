@@ -48,6 +48,9 @@ def test_create_run_and_complete(client, monkeypatch, tmp_path):
     final = client.get(f"/api/runs/{rid}").json()
     assert final["status"] == "completed"
     assert len(final["metrics"]) == 2
+    assert final["finished_at"] is not None
+    assert final["eval"]["task"] == "classification"
+    assert "accuracy" in final["eval"] and "confusion_matrix" in final["eval"]
     assert [r["id"] for r in client.get(f"/api/projects/{pid}/runs").json()] == [rid]
 
 

@@ -56,6 +56,19 @@ def pause_requested(run_id: int) -> bool:
     return _pause_flag(run_id).exists()
 
 
+def eval_path(run_id: int) -> Path:
+    return run_dir(run_id) / "eval.json"
+
+
+def write_eval(run_id: int, data: dict) -> None:
+    eval_path(run_id).write_text(json.dumps(data), encoding="utf-8")
+
+
+def read_eval(run_id: int) -> dict | None:
+    p = eval_path(run_id)
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else None
+
+
 def latest_checkpoint(run_id: int) -> Path | None:
     ckpts = sorted((run_dir(run_id) / "checkpoints").glob("epoch_*.pt"))
     return ckpts[-1] if ckpts else None

@@ -107,8 +107,56 @@ def run_training(run_id, prep_id, nodes, edges, task, config, resume=False):
             runs_store.run_dir(run_id) / "checkpoints" / f"epoch_{epoch:04d}.pt",
         )
 
+    try:
+        _evaluate(run_id, module, data, task, device)
+    except Exception as exc:  # eval is best-effort
+        runs_store.append_log(run_id, f"eval skipped: {exc}")
+
     runs_store.append_log(run_id, "training complete")
     return "completed"
+
+
+def _evaluate(run_id, module, data, task, device) -> None:
+    module.eval()
+    with torch.no_grad():
+        xt = torch.tensor(data["X_test"], dtype=torch.float32, device=device)
+        out = module(xt).cpu().numpy()
+
+    if task == "classification":
+        from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+        yt = data["y_test"].astype(int)
+        preds = out.argmax(1)
+        n = int(max(int(yt.max()) + 1, int(preds.max()) + 1))
+        labels = list(range(n))
+        cm = confusion_matrix(yt, preds, labels=labels).tolist()
+        rep = classification_report(
+            yt, preds, labels=labels, output_dict=True, zero_division=0
+        )
+        per_class = [
+            {
+                "label": str(lbl),
+                "precision": round(rep[str(lbl)]["precision"], 4),
+                "recall": round(rep[str(lbl)]["recall"], 4),
+                "f1": round(rep[str(lbl)]["f1-score"], 4),
+                "support": int(rep[str(lbl)]["support"]),
+            }
+            for lbl in labels
+        ]
+        runs_store.write_eval(
+            run_id,
+            {
+                "task": "classification",
+                "accuracy": round(float(accuracy_score(yt, preds)), 4),
+                "labels": [str(lbl) for lbl in labels],
+                "confusion_matrix": cm,
+                "per_class": per_class,
+            },
+        )
+    else:
+        yt = data["y_test"].astype("float32")
+        mse = float(((out.ravel() - yt) ** 2).mean())
+        runs_store.write_eval(run_id, {"task": "regression", "mse": round(mse, 6)})
 
 
 def main():

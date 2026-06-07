@@ -1,8 +1,13 @@
 import asyncio
 import json
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
 from sqlmodel import Session, select
+
+
+def _now() -> datetime:
+    return datetime.now(timezone.utc)
 
 from app.db import get_session
 from app.models import ModelDef, Preparation, Run
@@ -64,6 +69,8 @@ def _sync_status(run: Run, session: Session) -> Run:
         if metrics:
             run.last_epoch = metrics[-1]["epoch"]
         run.summary_json = json.dumps(_summarize(run.id))
+        if run.status in ("completed", "failed") and run.finished_at is None:
+            run.finished_at = _now()
         session.add(run)
         session.commit()
         session.refresh(run)
@@ -79,6 +86,8 @@ def _read(run: Run) -> dict:
         "last_epoch": run.last_epoch,
         "config": json.loads(run.config_json),
         "summary": json.loads(run.summary_json),
+        "started_at": run.started_at.isoformat() if run.started_at else None,
+        "finished_at": run.finished_at.isoformat() if run.finished_at else None,
     }
 
 
@@ -93,6 +102,7 @@ def create_run(body: RunCreate, session: Session = Depends(get_session)):
         model_id=model.id,
         status="running",
         config_json=json.dumps(body.config.model_dump()),
+        started_at=_now(),
     )
     session.add(run)
     session.commit()
@@ -119,6 +129,7 @@ def get_run(run_id: int, session: Session = Depends(get_session)):
         **_read(run),
         "metrics": runs_store.read_metrics(run_id),
         "log": runs_store.read_log(run_id),
+        "eval": runs_store.read_eval(run_id),
     }
 
 
@@ -152,6 +163,7 @@ def stop_run(run_id: int, session: Session = Depends(get_session)):
         raise HTTPException(status_code=404, detail="Run not found")
     job_manager.stop(run_id)
     run.status = "stopped"
+    run.finished_at = _now()
     session.add(run)
     session.commit()
     return {"ok": True}
