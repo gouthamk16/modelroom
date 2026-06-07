@@ -35,3 +35,32 @@ test("datasets: upload a CSV and see preview + visualizations", async ({ page })
 
   await page.screenshot({ path: "e2e/screens/datasets.png", fullPage: true });
 });
+
+test("preprocessing: build a pipeline and apply it", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "Datasets" }).click();
+
+  await page.setInputFiles('input[type="file"]', {
+    name: "prep.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from(
+      "age,city,label\n" +
+        Array.from({ length: 20 }, (_, i) =>
+          `${20 + i},${i % 2 ? "NY" : "LA"},${i % 3 ? "yes" : "no"}`
+        ).join("\n") +
+        "\n"
+    ),
+  });
+  await page.getByRole("button", { name: "Upload CSV" }).click();
+  await page.getByText("prep.csv").click();
+
+  await expect(page.getByRole("heading", { name: "Data Processing" })).toBeVisible();
+  await page.getByLabel("Target").selectOption("label");
+  await page.getByLabel("Add step").selectOption("standardize");
+  await page.getByLabel("Add step").selectOption("one_hot");
+  await page.getByRole("button", { name: "Apply Pipeline" }).click();
+
+  await expect(page.getByText(/classification/)).toBeVisible();
+  await expect(page.getByText(/train/)).toBeVisible();
+  await page.screenshot({ path: "e2e/screens/preprocessing.png", fullPage: true });
+});
