@@ -109,6 +109,7 @@ export function ModelsPage() {
             <div className="flex-1">
               <label className="text-label-md uppercase text-on-surface-variant">Training dataset</label>
               <select
+                aria-label="Training dataset"
                 value={datasetId ?? ""}
                 onChange={(e) => setDatasetId(e.target.value ? Number(e.target.value) : null)}
                 className="mt-xs w-full bg-surface border border-outline-variant rounded-lg px-4 py-2.5 text-body-sm"

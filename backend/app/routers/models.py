@@ -5,11 +5,36 @@ from pydantic import BaseModel
 from sqlmodel import Session, select
 
 from app.db import get_session
-from app.models import ModelDef, Project
+from app.models import ModelDef, Preparation, Project
 from app.models_builder import shape_engine
 from app.schemas import ModelGraph
 
 router = APIRouter(prefix="/api", tags=["models"])
+
+
+def _starter_graph(dataset_id: int | None, session: Session) -> dict:
+    """A default input->output graph, sized to the dataset's preprocessing if available."""
+    features, classes = 8, 2
+    if dataset_id is not None:
+        prep = session.exec(
+            select(Preparation).where(Preparation.dataset_id == dataset_id)
+        ).first()
+        if prep is not None:
+            summary = json.loads(prep.summary_json)
+            features = int(summary.get("n_features") or features)
+            classes = (
+                int(summary.get("n_classes") or 0)
+                if summary.get("task") == "classification"
+                else 1
+            ) or classes
+    return {
+        "nodes": [
+            {"id": "input", "type": "input", "params": {"features": features}, "x": 60, "y": 160},
+            {"id": "output", "type": "output", "params": {"classes": classes}, "x": 460, "y": 160},
+        ],
+        "edges": [{"source": "input", "target": "output"}],
+        "input_features": features,
+    }
 
 
 class ModelCreate(BaseModel):
@@ -47,11 +72,14 @@ def create_model(
 ):
     if session.get(Project, project_id) is None:
         raise HTTPException(status_code=404, detail="Project not found")
+    graph = body.graph.model_dump()
+    if not graph.get("nodes"):
+        graph = _starter_graph(body.dataset_id, session)
     model = ModelDef(
         project_id=project_id,
         dataset_id=body.dataset_id,
         name=body.name,
-        graph_json=json.dumps(body.graph.model_dump()),
+        graph_json=json.dumps(graph),
     )
     session.add(model)
     session.commit()

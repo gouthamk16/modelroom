@@ -50,7 +50,6 @@ test("preprocessing: build a pipeline and apply it", async ({ page }) => {
         "\n"
     ),
   });
-  await page.getByRole("button", { name: "Upload CSV" }).click();
   await page.getByText("prep.csv").click();
 
   await expect(page.getByRole("heading", { name: "Data Processing" })).toBeVisible();
@@ -100,4 +99,23 @@ test("project detail: open a project summary", async ({ page }) => {
   await expect(page.getByText("Best model")).toBeVisible();
 
   await page.screenshot({ path: "e2e/screens/project-detail.png", fullPage: true });
+});
+
+test("training: create a model on a prepared dataset, train, and complete", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "Models" }).click();
+  await page.getByPlaceholder("Model name").fill("TrainE2E");
+  await page.getByLabel("Training dataset").selectOption({ label: "prep.csv" });
+  await page.getByRole("button", { name: "Create model" }).click();
+
+  // builder opens; start training
+  await page.getByRole("button", { name: "Train" }).click();
+  await page.getByLabel("Epochs").fill("3");
+  await page.getByRole("button", { name: "Start training" }).click();
+
+  // live run view -> completes (CPU/GPU, 3 epochs)
+  await expect(page.getByText("Run #", { exact: false })).toBeVisible();
+  await expect(page.getByText("completed", { exact: false })).toBeVisible({ timeout: 90000 });
+
+  await page.screenshot({ path: "e2e/screens/training.png", fullPage: true });
 });
