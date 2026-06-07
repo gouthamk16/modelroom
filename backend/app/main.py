@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.db import init_db
-from app.routers import datasets, projects
+from app.routers import datasets, preprocessing, projects
 
 
 @asynccontextmanager
@@ -28,6 +28,7 @@ def create_app() -> FastAPI:
 
     app.include_router(projects.router)
     app.include_router(datasets.router)
+    app.include_router(preprocessing.router)
     return app
 
 
