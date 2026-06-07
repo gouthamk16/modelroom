@@ -13,8 +13,8 @@ def test_project_defaults():
 def test_dataset_defaults():
     from app.models import Dataset
 
-    d = Dataset(project_id=1, name="churn.csv", filename="churn.csv")
-    assert d.project_id == 1
+    d = Dataset(name="churn.csv", filename="churn.csv")
+    assert d.name == "churn.csv"
     assert d.n_rows == 0
     assert d.n_cols == 0
 

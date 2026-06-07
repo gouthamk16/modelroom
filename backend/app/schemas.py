@@ -23,7 +23,6 @@ class ProjectRead(BaseModel):
 
 class DatasetRead(BaseModel):
     id: int
-    project_id: int
     name: str
     filename: str
     n_rows: int

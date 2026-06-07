@@ -3,7 +3,7 @@ from sqlmodel import Session, select
 
 from app.datasets import analysis, store
 from app.db import get_session
-from app.models import Dataset, Project
+from app.models import Dataset
 from app.schemas import DatasetRead
 
 router = APIRouter(prefix="/api", tags=["datasets"])
@@ -16,20 +16,13 @@ def _load(dataset_id: int, session: Session):
     return ds, store.load_df(dataset_id)
 
 
-@router.post(
-    "/projects/{project_id}/datasets",
-    response_model=DatasetRead,
-    status_code=status.HTTP_201_CREATED,
-)
+@router.post("/datasets", response_model=DatasetRead, status_code=status.HTTP_201_CREATED)
 async def upload_dataset(
-    project_id: int,
     file: UploadFile = File(...),
     session: Session = Depends(get_session),
 ):
-    if session.get(Project, project_id) is None:
-        raise HTTPException(status_code=404, detail="Project not found")
     content = await file.read()
-    ds = Dataset(project_id=project_id, name=file.filename, filename=file.filename)
+    ds = Dataset(name=file.filename, filename=file.filename)
     session.add(ds)
     session.commit()
     session.refresh(ds)
@@ -46,13 +39,8 @@ async def upload_dataset(
 
 
 @router.get("/datasets", response_model=list[DatasetRead])
-def list_datasets(
-    project_id: int | None = None, session: Session = Depends(get_session)
-):
-    query = select(Dataset).order_by(Dataset.created_at.desc())
-    if project_id is not None:
-        query = query.where(Dataset.project_id == project_id)
-    return session.exec(query).all()
+def list_datasets(session: Session = Depends(get_session)):
+    return session.exec(select(Dataset).order_by(Dataset.created_at.desc())).all()
 
 
 @router.get("/datasets/{dataset_id}", response_model=DatasetRead)

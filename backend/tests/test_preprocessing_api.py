@@ -3,12 +3,11 @@ import io
 
 def _make_dataset(client, monkeypatch, tmp_path):
     monkeypatch.setenv("MODELROOM_WORKSPACE", str(tmp_path))
-    pid = client.post("/api/projects", json={"name": "P"}).json()["id"]
     rows = "age,city,label\n" + "\n".join(
         f"{20 + i},{'NY' if i % 2 else 'LA'},{'yes' if i % 3 else 'no'}" for i in range(20)
     )
     res = client.post(
-        f"/api/projects/{pid}/datasets",
+        "/api/datasets",
         files={"file": ("d.csv", io.BytesIO(rows.encode()), "text/csv")},
     )
     return res.json()["id"]

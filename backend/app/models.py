@@ -17,7 +17,6 @@ class Project(SQLModel, table=True):
 
 class Dataset(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    project_id: int = Field(foreign_key="project.id", index=True)
     name: str
     filename: str
     n_rows: int = 0
