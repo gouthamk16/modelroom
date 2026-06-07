@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ModelRoom - Projects</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "background": "#fbf9f8",
+                "surface": "#fbf9f8",
+                "outline": "#8b716b",
+                "secondary-fixed": "#e5e2e1",
+                "on-primary-fixed": "#3d0700",
+                "on-error": "#ffffff",
+                "outline-variant": "#dec0b9",
+                "inverse-primary": "#ffb4a3",
+                "on-secondary-fixed-variant": "#474646",
+                "on-primary-fixed-variant": "#85230b",
+                "secondary-container": "#e5e2e1",
+                "surface-container-high": "#e9e8e7",
+                "on-tertiary-container": "#282a2c",
+                "on-error-container": "#93000a",
+                "on-tertiary-fixed-variant": "#454749",
+                "on-tertiary": "#ffffff",
+                "surface-container-lowest": "#ffffff",
+                "surface-bright": "#fbf9f8",
+                "secondary-fixed-dim": "#c9c6c5",
+                "surface-container-low": "#f5f3f3",
+                "surface-container-highest": "#e4e2e2",
+                "inverse-on-surface": "#f2f0f0",
+                "on-primary": "#ffffff",
+                "on-secondary-fixed": "#1c1b1b",
+                "on-primary-container": "#560d00",
+                "surface-container": "#efeded",
+                "on-secondary-container": "#656464",
+                "on-tertiary-fixed": "#1a1c1d",
+                "on-background": "#1b1c1c",
+                "surface-variant": "#e4e2e2",
+                "on-secondary": "#ffffff",
+                "primary-fixed": "#ffdad2",
+                "surface-dim": "#dbdad9",
+                "tertiary-container": "#909193",
+                "tertiary": "#5d5e60",
+                "primary-container": "#e86b4d",
+                "primary": "#a63b21",
+                "inverse-surface": "#303031",
+                "error": "#ba1a1a",
+                "tertiary-fixed-dim": "#c6c6c8",
+                "primary-fixed-dim": "#ffb4a3",
+                "secondary": "#5f5e5e",
+                "on-surface-variant": "#57423d",
+                "on-surface": "#1b1c1c",
+                "tertiary-fixed": "#e2e2e4",
+                "surface-tint": "#a63b21",
+                "error-container": "#ffdad6"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "margin-desktop": "40px",
+                "gutter": "24px",
+                "xl": "48px",
+                "xs": "8px",
+                "margin-mobile": "16px",
+                "md": "24px",
+                "base": "4px",
+                "lg": "32px",
+                "sm": "16px"
+        },
+        "fontFamily": {
+                "headline-lg": [
+                        "Manrope"
+                ],
+                "display-lg": [
+                        "Manrope"
+                ],
+                "label-md": [
+                        "Manrope"
+                ],
+                "headline-lg-mobile": [
+                        "Manrope"
+                ],
+                "body-lg": [
+                        "Manrope"
+                ],
+                "headline-md": [
+                        "Manrope"
+                ],
+                "body-sm": [
+                        "Manrope"
+                ],
+                "label-sm": [
+                        "Manrope"
+                ],
+                "body-md": [
+                        "Manrope"
+                ]
+        },
+        "fontSize": {
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "56px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "28px",
+                        {
+                                "lineHeight": "36px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-sm": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "14px",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+    }
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fbf9f8; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e4e2e2; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #dec0b9; 
+        }
+
+        /* Minimalist Sparkline styling */
+        .sparkline-svg {
+            stroke: #a63b21;
+            stroke-width: 1.5;
+            fill: none;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+        }
+        .sparkline-svg.success { stroke: #e86b4d; }
+        .sparkline-svg.warning { stroke: #a63b21; }
+        .sparkline-svg.error { stroke: #ba1a1a; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased overflow-hidden flex h-screen">
+<!-- SideNavBar -->
+<nav class="bg-surface-container-low font-body-sm text-body-sm fixed left-0 top-0 h-full w-[280px] border-r border-outline-variant flex flex-col py-lg px-md gap-sm z-50">
+<div class="mb-lg px-sm">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">ModelRoom</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-xs">V0.4.2</p>
+</div>
+<ul class="flex flex-col gap-xs flex-1">
+<!-- Active State: Projects -->
+<li class="">
+<a class="flex items-center gap-sm px-sm py-2 bg-primary-container text-on-primary-container rounded-lg duration-200 ease-in-out font-medium" href="#">
+<span class="material-symbols-outlined fill-icon text-[20px]">folder_open</span>
+                    Projects
+                </a>
+</li>
+<!-- Inactive States -->
+<li class="">
+<a class="flex items-center gap-sm px-sm py-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors duration-200 ease-in-out rounded-lg font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">database</span>
+                    Datasets
+                </a>
+</li>
+<li class="">
+<a class="flex items-center gap-sm px-sm py-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors duration-200 ease-in-out rounded-lg font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+                    Models
+                </a>
+</li>
+<li class="">
+<a class="flex items-center gap-sm px-sm py-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors duration-200 ease-in-out rounded-lg font-medium" href="#">
+<span class="material-symbols-outlined text-[20px]">format_list_bulleted</span>
+                    Jobs
+                </a>
+</li>
+</ul>
+<div class="mt-auto pt-md border-t border-outline-variant px-sm flex items-center gap-sm cursor-pointer hover:bg-surface-variant/50 p-2 rounded-lg transition-colors">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center overflow-hidden border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">person</span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface font-medium">ML Engineer</p>
+<p class="font-label-sm text-label-sm text-[10px] text-on-surface-variant">Active</p>
+</div>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="ml-[280px] w-[calc(100%-280px)] h-full flex flex-col relative pb-8">
+<!-- TopNavBar -->
+<header class="bg-surface font-label-sm text-label-sm fixed top-0 right-0 w-[calc(100%-280px)] h-16 border-b border-outline-variant flex justify-between items-center px-lg z-40 shadow-sm">
+<div class="flex items-center gap-md h-full">
+<!-- Navigation Links (Breadcrumbs context in this design) -->
+<nav class="flex h-full items-end">
+<ul class="flex gap-lg h-full">
+<li class="h-full flex items-end">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 uppercase active:opacity-80 transition-colors" href="#">Project</a>
+</li>
+<li class="h-full flex items-end">
+<a class="text-on-surface-variant hover:text-primary transition-colors pb-1 uppercase border-b-2 border-transparent active:opacity-80 font-medium" href="#">Model Name</a>
+</li>
+</ul>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<!-- Icon Actions -->
+<div class="flex items-center gap-xs border-r border-outline-variant pr-md">
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-variant/50 transition-colors rounded-full" title="Play">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-surface-variant/50 transition-colors rounded-full" title="Stop">
+<span class="material-symbols-outlined text-[18px]">stop</span>
+</button>
+</div>
+<!-- Text Actions -->
+<div class="flex items-center gap-sm">
+<button class="px-5 py-1.5 border border-outline-variant text-on-surface hover:bg-surface-variant/50 rounded-full transition-colors uppercase active:opacity-80 font-semibold shadow-sm">Export</button>
+<button class="px-5 py-1.5 bg-primary text-on-primary font-bold rounded-full shadow-sm hover:brightness-110 transition-all uppercase active:opacity-80">Deploy</button>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 overflow-y-auto mt-16 p-lg bg-background">
+<!-- Page Header & Controls -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md mb-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Active Experiments</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Overview of current training runs and project statuses.</p>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-sm w-full md:w-auto">
+<!-- Search/Filter -->
+<div class="relative w-full sm:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px]">search</span>
+<input class="w-full bg-surface border border-outline-variant rounded pl-9 pr-3 py-2 text-label-md font-label-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors placeholder:text-outline shadow-sm" placeholder="Search datasets, models..." type="text"/>
+</div>
+<!-- Primary Action -->
+<button class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2 bg-primary text-on-primary rounded-full shadow-sm hover:brightness-110 transition-all font-body-sm text-body-sm font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-[18px]">add</span>New Project</button>
+</div>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-md">
+<!-- Project Card 1: NLP Foundation -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md flex flex-col gap-sm hover:border-outline hover:shadow-md shadow-sm transition-all cursor-pointer group">
+<div class="flex justify-between items-start border-b border-outline-variant pb-sm mb-xs">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary font-bold transition-colors">NLP Foundation v2</h3>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant text-[11px]">ID: proj_892a_x1</p>
+</div>
+<div class="flex items-center gap-1 bg-surface-variant px-2 py-1 rounded">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">schedule</span>
+<span class="font-label-sm text-label-sm text-[11px] text-on-surface-variant">2h ago</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm mb-sm">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase mb-1 font-semibold">Val Loss</span>
+<div class="flex items-end gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold text-lg">0.241</span>
+<span class="font-label-sm text-label-sm text-primary-container text-[10px] mb-1 font-bold">↓ 0.02</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase mb-1 font-semibold">Epoch</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold text-lg">42/100</span>
+</div>
+</div>
+<div class="h-12 w-full mt-auto relative border border-outline-variant/50 rounded bg-surface-container-low overflow-hidden">
+<!-- Simulated Sparkline -->
+<svg class="w-full h-full absolute inset-0" preserveaspectratio="none" viewbox="0 0 100 30">
+<path class="sparkline-svg success" d="M0,25 Q10,22 20,20 T40,15 T60,10 T80,8 T100,5"></path>
+</svg>
+<div class="absolute bottom-1 right-2 font-label-sm text-[9px] text-on-surface-variant font-semibold">Loss Curve</div>
+</div>
+</article>
+<!-- Project Card 2: Vision ResNet -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md flex flex-col gap-sm hover:border-outline hover:shadow-md shadow-sm transition-all cursor-pointer group">
+<div class="flex justify-between items-start border-b border-outline-variant pb-sm mb-xs">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary font-bold transition-colors">Vision ResNet-50</h3>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant text-[11px]">ID: proj_441b_v3</p>
+</div>
+<div class="flex items-center gap-1 bg-surface-variant px-2 py-1 rounded">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">schedule</span>
+<span class="font-label-sm text-label-sm text-[11px] text-on-surface-variant">5m ago</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm mb-sm">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase mb-1 font-semibold">Accuracy</span>
+<div class="flex items-end gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold text-lg">94.2%</span>
+<span class="font-label-sm text-label-sm text-primary text-[10px] mb-1 font-bold">Plateau</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase mb-1 font-semibold">GPU Util</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold text-lg">98%</span>
+</div>
+</div>
+<div class="h-12 w-full mt-auto relative border border-outline-variant/50 rounded bg-surface-container-low overflow-hidden">
+<svg class="w-full h-full absolute inset-0" preserveaspectratio="none" viewbox="0 0 100 30">
+<path class="sparkline-svg warning" d="M0,28 L10,25 L20,15 L30,5 L40,8 L50,12 L60,10 L70,8 L80,9 L90,8 L100,8"></path>
+</svg>
+<div class="absolute bottom-1 right-2 font-label-sm text-[9px] text-on-surface-variant font-semibold">Acc Curve</div>
+</div>
+</article>
+<!-- Project Card 3: Anomaly Detection -->
+<article class="bg-error-container/10 border border-error/30 rounded-lg p-md flex flex-col gap-sm hover:border-error hover:shadow-md shadow-sm transition-all cursor-pointer group relative overflow-hidden">
+<!-- Subtle error gradient background hint -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-error/5 rounded-bl-full pointer-events-none"></div>
+<div class="flex justify-between items-start border-b border-error/20 pb-sm mb-xs relative z-10">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+<h3 class="font-headline-sm text-headline-sm text-error group-hover:text-error/80 font-bold transition-colors">Anomaly Detection Model</h3>
+</div>
+<p class="font-label-sm text-label-sm text-error/70 text-[11px]">ID: proj_999z_e1</p>
+</div>
+<div class="flex items-center gap-1 bg-error-container text-on-error-container px-2 py-1 rounded border border-error/20 font-bold">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+<span class="font-label-sm text-label-sm text-[11px]">OOM</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm mb-sm relative z-10">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-error/70 uppercase mb-1 font-semibold">Status</span>
+<span class="font-body-sm text-body-sm text-error font-bold text-sm">Failed at Epoch 12</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-error/70 uppercase mb-1 font-semibold">Memory</span>
+<span class="font-headline-sm text-headline-sm text-error font-bold text-lg">81.2GB/80GB</span>
+</div>
+</div>
+<div class="h-12 w-full mt-auto relative border border-error/20 rounded bg-error/5 overflow-hidden z-10">
+<svg class="w-full h-full absolute inset-0" preserveaspectratio="none" viewbox="0 0 100 30">
+<path class="sparkline-svg error" d="M0,25 L20,22 L40,18 L60,10 L65,0"></path>
+</svg>
+<div class="absolute bottom-1 right-2 font-label-sm text-[9px] text-error font-semibold">Crash Trace</div>
+</div>
+</article>
+<!-- Skeleton/Empty Card for visual balance -->
+<div class="bg-surface-container-lowest border border-dashed border-outline-variant rounded-lg p-md flex flex-col items-center justify-center gap-sm text-on-surface-variant hover:border-primary hover:text-primary transition-all cursor-pointer opacity-80 hover:opacity-100 min-h-[200px] shadow-sm hover:shadow-md">
+<span class="material-symbols-outlined text-4xl mb-2">add_circle</span>
+<span class="font-headline-sm text-headline-sm font-bold">Initialize New Workspace</span>
+<span class="font-body-sm text-body-sm text-center max-w-[200px]">Start an empty project or clone from registry.</span>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest font-label-sm text-label-sm fixed bottom-0 right-0 w-[calc(100%-280px)] h-8 border-t border-outline-variant flex items-center justify-between px-md z-40 cursor-default shadow-sm">
+<div class="text-on-surface-variant truncate text-[11px] flex items-center gap-2 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                Environment: GPU NVIDIA A100 - Active | RAM: 32GB/80GB | Disk: 1.2TB | Epoch: 42/100
+            </div>
+<div class="flex items-center gap-md text-[11px] font-medium">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Documentation</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" href="#">
+                    System Status
+                    <span class="material-symbols-outlined text-[12px] text-primary">check_circle</span>
+</a>
+</div>
+</footer>
+</div>
+</body></html>

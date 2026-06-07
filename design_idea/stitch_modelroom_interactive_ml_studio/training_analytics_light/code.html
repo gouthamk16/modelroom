@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+<html class="" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ModelRoom - Training &amp; Metrics</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "background": "#fbf9f8",
+                "surface": "#fbf9f8",
+                "outline": "#8b716b",
+                "secondary-fixed": "#e5e2e1",
+                "on-primary-fixed": "#3d0700",
+                "on-error": "#ffffff",
+                "outline-variant": "#dec0b9",
+                "inverse-primary": "#ffb4a3",
+                "on-secondary-fixed-variant": "#474646",
+                "on-primary-fixed-variant": "#85230b",
+                "secondary-container": "#e5e2e1",
+                "surface-container-high": "#e9e8e7",
+                "on-tertiary-container": "#282a2c",
+                "on-error-container": "#93000a",
+                "on-tertiary-fixed-variant": "#454749",
+                "on-tertiary": "#ffffff",
+                "surface-container-lowest": "#ffffff",
+                "surface-bright": "#fbf9f8",
+                "secondary-fixed-dim": "#c9c6c5",
+                "surface-container-low": "#f5f3f3",
+                "surface-container-highest": "#e4e2e2",
+                "inverse-on-surface": "#f2f0f0",
+                "on-primary": "#ffffff",
+                "on-secondary-fixed": "#1c1b1b",
+                "on-primary-container": "#560d00",
+                "surface-container": "#efeded",
+                "on-secondary-container": "#656464",
+                "on-tertiary-fixed": "#1a1c1d",
+                "on-background": "#1b1c1c",
+                "surface-variant": "#e4e2e2",
+                "on-secondary": "#ffffff",
+                "primary-fixed": "#ffdad2",
+                "surface-dim": "#dbdad9",
+                "tertiary-container": "#909193",
+                "tertiary": "#5d5e60",
+                "primary-container": "#e86b4d",
+                "primary": "#a63b21",
+                "inverse-surface": "#303031",
+                "error": "#ba1a1a",
+                "tertiary-fixed-dim": "#c6c6c8",
+                "primary-fixed-dim": "#ffb4a3",
+                "secondary": "#5f5e5e",
+                "on-surface-variant": "#57423d",
+                "on-surface": "#1b1c1c",
+                "tertiary-fixed": "#e2e2e4",
+                "surface-tint": "#a63b21",
+                "error-container": "#ffdad6"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "margin-desktop": "40px",
+                "gutter": "24px",
+                "xl": "48px",
+                "xs": "8px",
+                "margin-mobile": "16px",
+                "md": "24px",
+                "base": "4px",
+                "lg": "32px",
+                "sm": "16px"
+        },
+        "fontFamily": {
+                "headline-lg": [
+                        "Manrope"
+                ],
+                "display-lg": [
+                        "Manrope"
+                ],
+                "label-md": [
+                        "Manrope"
+                ],
+                "headline-lg-mobile": [
+                        "Manrope"
+                ],
+                "body-lg": [
+                        "Manrope"
+                ],
+                "headline-md": [
+                        "Manrope"
+                ],
+                "body-sm": [
+                        "Manrope"
+                ],
+                "label-sm": [
+                        "Manrope"
+                ],
+                "body-md": [
+                        "Manrope"
+                ],
+                "data-mono": ["JetBrains Mono"]
+        },
+        "fontSize": {
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "56px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "28px",
+                        {
+                                "lineHeight": "36px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-sm": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "14px",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                "data-mono": ["13px", { "lineHeight": "18px", "fontWeight": "400" }]
+        }
+},
+    },
+  }
+</script>
+<style>
+        /* Hide scrollbar for clean log view */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Grid chart lines */
+        .chart-grid {
+            background-image: 
+                linear-gradient(to right, #e4e2e2 1px, transparent 1px),
+                linear-gradient(to bottom, #e4e2e2 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md antialiased selection:bg-primary/30 selection:text-primary min-h-screen">
+<!-- SideNavBar (Shared Component) -->
+<nav class="bg-surface-container-low border-r border-outline-variant fixed left-0 top-0 h-full w-[280px] flex flex-col py-lg px-md gap-sm z-50">
+<!-- Header -->
+<div class="flex items-center gap-md mb-lg px-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-md text-headline-md font-bold">
+                M
+            </div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">ModelRoom</h1>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex flex-col gap-xs flex-1">
+<a class="flex items-center gap-md px-sm py-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors duration-200 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">folder_open</span>
+<span class="font-body-sm text-body-sm">Projects</span>
+</a>
+<a class="flex items-center gap-md px-sm py-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors duration-200 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">database</span>
+<span class="font-body-sm text-body-sm">Datasets</span>
+</a>
+<a class="flex items-center gap-md px-sm py-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors duration-200 ease-in-out rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">psychology</span>
+<span class="font-body-sm text-body-sm">Models</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-md px-sm py-2 bg-primary-container text-on-primary-container rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">format_list_bulleted</span>
+<span class="font-body-sm text-body-sm font-medium">Jobs</span>
+</a>
+</div>
+</nav>
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface border-b border-outline-variant fixed top-0 right-0 w-[calc(100%-280px)] h-16 flex justify-between items-center px-lg z-40">
+<!-- Breadcrumbs / Navigation -->
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors cursor-pointer uppercase">Project</span>
+<span class="material-symbols-outlined text-outline text-[16px]">chevron_right</span>
+<span class="font-label-caps text-label-caps text-primary font-bold border-b-2 border-primary pb-1 pt-1 uppercase">Model Name</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-md">
+<!-- Icon Actions -->
+<div class="flex items-center gap-sm border-r border-outline-variant pr-md">
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:opacity-80 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-error transition-colors active:opacity-80 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined">stop</span>
+</button>
+</div>
+<!-- Text Actions -->
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors active:opacity-80 px-sm py-1 border border-outline-variant hover:border-outline uppercase rounded-full">
+                Export
+            </button>
+<button class="font-label-caps text-label-caps bg-primary text-on-primary px-sm py-1 hover:bg-primary/90 transition-colors active:opacity-80 uppercase rounded-full">
+                Deploy
+            </button>
+<!-- Profile -->
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center border border-outline-variant ml-sm cursor-pointer hover:border-outline transition-colors">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">person</span>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="ml-[280px] mt-16 mb-8 p-lg flex flex-col gap-lg">
+<!-- Job Header & Global Controls -->
+<div class="flex items-center justify-between bg-surface border border-outline-variant rounded-lg p-md">
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-sm">
+<div class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></div>
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">TRAINING ACTIVE</span>
+</div>
+<div class="h-4 w-px bg-outline-variant"></div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">JOB ID</span>
+<span class="font-data-mono text-data-mono text-on-surface">TRN-8992-X</span>
+</div>
+<div class="h-4 w-px bg-outline-variant"></div>
+<div class="flex flex-col w-[200px]">
+<div class="flex justify-between mb-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">EPOCH</span>
+<span class="font-data-mono text-data-mono text-on-surface text-[11px]">42 / 100</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 42%;"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="font-label-caps text-label-caps text-error border border-error/50 px-md py-2 hover:bg-error/10 transition-colors flex items-center gap-sm uppercase rounded-full">
+<span class="material-symbols-outlined text-[16px]">stop_circle</span>
+                    STOP TRAINING
+                </button>
+<button class="font-label-caps text-label-caps bg-primary text-on-primary px-md py-2 hover:bg-primary/90 transition-colors flex items-center gap-sm uppercase rounded-full">
+<span class="material-symbols-outlined text-[16px]">save</span>
+                    SAVE WEIGHTS
+                </button>
+</div>
+</div>
+<!-- Charts Row -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Loss Chart -->
+<div class="col-span-12 lg:col-span-6 bg-surface border border-outline-variant rounded-lg flex flex-col h-[320px]">
+<div class="border-b border-outline-variant p-sm px-md flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">show_chart</span>
+<h2 class="font-label-caps text-label-caps text-on-surface uppercase">LOSS (CROSS-ENTROPY)</h2>
+</div>
+<div class="flex gap-md">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="font-data-mono text-data-mono text-[10px] text-on-surface-variant">Train: 0.124</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="font-data-mono text-data-mono text-[10px] text-on-surface-variant">Val: 0.142</span>
+</div>
+</div>
+</div>
+<div class="flex-1 p-md relative chart-grid rounded-b-lg overflow-hidden">
+<!-- Y Axis Labels -->
+<div class="absolute left-2 top-0 bottom-0 flex flex-col justify-between py-md font-data-mono text-data-mono text-[10px] text-outline z-10">
+<span class="">1.0</span>
+<span class="">0.5</span>
+<span class="">0.0</span>
+</div>
+<!-- SVG Chart Path (Simulated) -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<!-- Train Loss (Primary) -->
+<path class="text-primary" d="M 0 80 Q 20 20, 50 15 T 100 10" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+<!-- Val Loss (Tertiary) -->
+<path class="text-tertiary stroke-dasharray-4" d="M 0 75 Q 30 30, 60 25 T 100 22" fill="none" stroke="currentColor" stroke-dasharray="4" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+</div>
+<!-- Accuracy Chart -->
+<div class="col-span-12 lg:col-span-6 bg-surface border border-outline-variant rounded-lg flex flex-col h-[320px]">
+<div class="border-b border-outline-variant p-sm px-md flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">monitoring</span>
+<h2 class="font-label-caps text-label-caps text-on-surface uppercase">ACCURACY</h2>
+</div>
+<div class="flex gap-md">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="font-data-mono text-data-mono text-[10px] text-on-surface-variant">Train: 96.4%</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-primary-container border border-primary"></div>
+<span class="font-data-mono text-data-mono text-[10px] text-on-surface-variant">Val: 94.8%</span>
+</div>
+</div>
+</div>
+<div class="flex-1 p-md relative chart-grid rounded-b-lg overflow-hidden">
+<div class="absolute left-2 top-0 bottom-0 flex flex-col justify-between py-md font-data-mono text-data-mono text-[10px] text-outline z-10">
+<span class="">100</span>
+<span class="">50</span>
+<span class="">0</span>
+</div>
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<!-- Train Acc (Secondary) -->
+<path class="text-secondary" d="M 0 90 Q 20 40, 50 20 T 100 5" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+<!-- Val Acc (Outline) -->
+<path class="text-primary-container" d="M 0 95 Q 30 50, 60 30 T 100 15" fill="none" stroke="currentColor" stroke-dasharray="2" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Metrics & Vis Row -->
+<div class="grid grid-cols-12 gap-gutter h-[240px]">
+<!-- Key Metrics Panel -->
+<div class="col-span-12 lg:col-span-4 grid grid-cols-2 gap-sm">
+<!-- Precision -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">PRECISION</span>
+<div>
+<div class="font-headline-md text-headline-md text-on-surface">0.942</div>
+<div class="flex items-center gap-xs mt-1 text-secondary">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+<span class="font-data-mono text-data-mono text-[10px]">0.012</span>
+</div>
+</div>
+</div>
+<!-- Recall -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">RECALL</span>
+<div>
+<div class="font-headline-md text-headline-md text-on-surface">0.918</div>
+<div class="flex items-center gap-xs mt-1 text-secondary">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+<span class="font-data-mono text-data-mono text-[10px]">0.005</span>
+</div>
+</div>
+</div>
+<!-- F1 Score -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">F1 SCORE</span>
+<div>
+<div class="font-headline-md text-headline-md text-on-surface">0.930</div>
+<div class="flex items-center gap-xs mt-1 text-secondary">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+<span class="font-data-mono text-data-mono text-[10px]">0.008</span>
+</div>
+</div>
+</div>
+<!-- Learning Rate -->
+<div class="bg-surface border border-outline-variant rounded-lg p-md flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">LEARNING RATE</span>
+<div>
+<div class="font-headline-md text-headline-md text-on-surface">1e-4</div>
+<div class="flex items-center gap-xs mt-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">horizontal_rule</span>
+<span class="font-data-mono text-data-mono text-[10px]">Cosine Anneal</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Confusion Matrix Visualization -->
+<div class="col-span-12 lg:col-span-8 bg-surface border border-outline-variant rounded-lg flex flex-col">
+<div class="border-b border-outline-variant p-sm px-md flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">grid_on</span>
+<h2 class="font-label-caps text-label-caps text-on-surface uppercase">CONFUSION MATRIX (VAL SET)</h2>
+</div>
+<span class="font-data-mono text-data-mono text-[10px] text-on-surface-variant">Epoch 42</span>
+</div>
+<div class="flex-1 p-md flex items-center justify-center">
+<!-- Matrix Grid Container -->
+<div class="flex flex-col gap-1 w-full max-w-md">
+<div class="flex justify-between px-4 mb-2">
+<span class="font-label-caps text-label-caps text-outline text-[9px] uppercase">PREDICTED →</span>
+<span class="font-label-caps text-label-caps text-outline text-[9px] text-right uppercase">TRUE ↓</span>
+</div>
+<div class="grid grid-cols-4 gap-1">
+<!-- Row 1 -->
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary text-[10px]" style="opacity: 0.95;">940</div>
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary-fixed text-[10px]" style="opacity: 0.1;">12</div>
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary-fixed text-[10px]" style="opacity: 0.05;">5</div>
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary-fixed text-[10px]" style="opacity: 0.2;">25</div>
+<!-- Row 2 -->
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary-fixed text-[10px]" style="opacity: 0.15;">18</div>
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary text-[10px]" style="opacity: 0.88;">880</div>
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary-fixed text-[10px]" style="opacity: 0.3;">45</div>
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary-fixed text-[10px]" style="opacity: 0.05;">8</div>
+<!-- Row 3 -->
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary-fixed text-[10px]" style="opacity: 0.02;">2</div>
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary-fixed text-[10px]" style="opacity: 0.25;">35</div>
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary text-[10px]" style="opacity: 0.92;">915</div>
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary-fixed text-[10px]" style="opacity: 0.1;">10</div>
+<!-- Row 4 -->
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary-fixed text-[10px]" style="opacity: 0.22;">28</div>
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary-fixed text-[10px]" style="opacity: 0.08;">11</div>
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary-fixed text-[10px]" style="opacity: 0.05;">6</div>
+<div class="bg-primary aspect-square rounded flex items-center justify-center font-data-mono text-data-mono text-on-primary text-[10px]" style="opacity: 0.85;">850</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Logs Console -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg flex flex-col h-[200px]">
+<div class="border-b border-outline-variant p-sm px-md flex items-center justify-between bg-surface">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">terminal</span>
+<h2 class="font-label-caps text-label-caps text-on-surface uppercase">LIVE CONSOLE</h2>
+</div>
+<div class="flex gap-sm">
+<button class="text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined text-[14px]">content_copy</span></button>
+<button class="text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined text-[14px]">open_in_full</span></button>
+</div>
+</div>
+<div class="flex-1 p-md overflow-y-auto no-scrollbar font-data-mono text-data-mono text-[11px] leading-relaxed" id="log-container">
+<!-- Log Entries -->
+<div class="flex gap-md hover:bg-surface-variant/30 px-1 py-0.5 rounded">
+<span class="text-outline w-24 shrink-0">14:02:11.452</span>
+<span class="text-secondary w-12 shrink-0">INFO</span>
+<span class="text-on-surface">Epoch 41 complete. Saving checkpoint to s3://modelroom/checkpoints/TRN-8992-X/ep41.pt</span>
+</div>
+<div class="flex gap-md hover:bg-surface-variant/30 px-1 py-0.5 rounded">
+<span class="text-outline w-24 shrink-0">14:02:15.018</span>
+<span class="text-secondary w-12 shrink-0">INFO</span>
+<span class="text-on-surface">Starting Epoch 42/100...</span>
+</div>
+<div class="flex gap-md hover:bg-surface-variant/30 px-1 py-0.5 rounded">
+<span class="text-outline w-24 shrink-0">14:02:15.102</span>
+<span class="text-primary w-12 shrink-0">DEBUG</span>
+<span class="text-on-surface-variant">Adjusting learning rate: 9.85e-05 -&gt; 9.62e-05 (Cosine Annealing)</span>
+</div>
+<div class="flex gap-md hover:bg-surface-variant/30 px-1 py-0.5 rounded">
+<span class="text-outline w-24 shrink-0">14:02:16.881</span>
+<span class="text-tertiary w-12 shrink-0">WARN</span>
+<span class="text-on-surface">Data loading worker 3 blocked for 120ms. Consider increasing num_workers.</span>
+</div>
+<div class="flex gap-md hover:bg-surface-variant/30 px-1 py-0.5 rounded">
+<span class="text-outline w-24 shrink-0">14:02:45.330</span>
+<span class="text-secondary w-12 shrink-0">INFO</span>
+<span class="text-on-surface">Batch [100/1250] - Loss: 0.128 - Acc: 96.2% - 4.2 it/s</span>
+</div>
+<div class="flex gap-md hover:bg-surface-variant/30 px-1 py-0.5 rounded">
+<span class="text-outline w-24 shrink-0">14:03:09.145</span>
+<span class="text-secondary w-12 shrink-0">INFO</span>
+<span class="text-on-surface">Batch [200/1250] - Loss: 0.126 - Acc: 96.3% - 4.2 it/s</span>
+</div>
+<div class="flex gap-md hover:bg-surface-variant/30 px-1 py-0.5 rounded">
+<span class="text-outline w-24 shrink-0">14:03:33.002</span>
+<span class="text-secondary w-12 shrink-0">INFO</span>
+<span class="text-on-surface">Batch [300/1250] - Loss: 0.124 - Acc: 96.4% - 4.2 it/s</span>
+</div>
+<div class="flex gap-md hover:bg-surface-variant/30 px-1 py-0.5 rounded items-center">
+<span class="text-outline w-24 shrink-0">14:03:41.220</span>
+<span class="text-secondary w-12 shrink-0">INFO</span>
+<span class="text-on-surface flex items-center gap-2">Processing batch [335/1250] <div class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></div></span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant fixed bottom-0 right-0 w-[calc(100%-280px)] h-8 flex items-center justify-between px-md z-40">
+<span class="font-data-mono text-data-mono text-secondary">Environment: GPU NVIDIA A100 - Active | RAM: 32GB/80GB | Disk: 1.2TB | Epoch: 42/100</span>
+<div class="flex items-center gap-md">
+<a class="font-data-mono text-data-mono text-on-surface-variant hover:text-primary cursor-default" href="#">Documentation</a>
+<a class="font-data-mono text-data-mono text-on-surface-variant hover:text-primary cursor-default" href="#">Support</a>
+<a class="font-data-mono text-data-mono text-on-surface-variant hover:text-primary cursor-default" href="#">System Status</a>
+</div>
+</footer>
+<script>
+        // Auto-scroll logs to bottom for realistic effect
+        const logContainer = document.getElementById('log-container');
+        if(logContainer) {
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+    </script>
+</body></html>

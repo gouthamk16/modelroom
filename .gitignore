@@ -1,0 +1,19 @@
+# Python
+backend/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# ModelRoom workspace (datasets, checkpoints, sqlite db)
+.modelroom/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

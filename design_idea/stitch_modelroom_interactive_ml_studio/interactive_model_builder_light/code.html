@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ModelRoom - Visual Builder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "background": "#fbf9f8",
+                "surface": "#fbf9f8",
+                "outline": "#8b716b",
+                "secondary-fixed": "#e5e2e1",
+                "on-primary-fixed": "#3d0700",
+                "on-error": "#ffffff",
+                "outline-variant": "#dec0b9",
+                "inverse-primary": "#ffb4a3",
+                "on-secondary-fixed-variant": "#474646",
+                "on-primary-fixed-variant": "#85230b",
+                "secondary-container": "#e5e2e1",
+                "surface-container-high": "#e9e8e7",
+                "on-tertiary-container": "#282a2c",
+                "on-error-container": "#93000a",
+                "on-tertiary-fixed-variant": "#454749",
+                "on-tertiary": "#ffffff",
+                "surface-container-lowest": "#ffffff",
+                "surface-bright": "#fbf9f8",
+                "secondary-fixed-dim": "#c9c6c5",
+                "surface-container-low": "#f5f3f3",
+                "surface-container-highest": "#e4e2e2",
+                "inverse-on-surface": "#f2f0f0",
+                "on-primary": "#ffffff",
+                "on-secondary-fixed": "#1c1b1b",
+                "on-primary-container": "#560d00",
+                "surface-container": "#efeded",
+                "on-secondary-container": "#656464",
+                "on-tertiary-fixed": "#1a1c1d",
+                "on-background": "#1b1c1c",
+                "surface-variant": "#e4e2e2",
+                "on-secondary": "#ffffff",
+                "primary-fixed": "#ffdad2",
+                "surface-dim": "#dbdad9",
+                "tertiary-container": "#909193",
+                "tertiary": "#5d5e60",
+                "primary-container": "#e86b4d",
+                "primary": "#a63b21",
+                "inverse-surface": "#303031",
+                "error": "#ba1a1a",
+                "tertiary-fixed-dim": "#c6c6c8",
+                "primary-fixed-dim": "#ffb4a3",
+                "secondary": "#5f5e5e",
+                "on-surface-variant": "#57423d",
+                "on-surface": "#1b1c1c",
+                "tertiary-fixed": "#e2e2e4",
+                "surface-tint": "#a63b21",
+                "error-container": "#ffdad6"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "margin-desktop": "40px",
+                "gutter": "24px",
+                "xl": "48px",
+                "xs": "8px",
+                "margin-mobile": "16px",
+                "md": "24px",
+                "base": "4px",
+                "lg": "32px",
+                "sm": "16px"
+        },
+        "fontFamily": {
+                "headline-lg": [
+                        "Manrope"
+                ],
+                "display-lg": [
+                        "Manrope"
+                ],
+                "label-md": [
+                        "Manrope"
+                ],
+                "headline-lg-mobile": [
+                        "Manrope"
+                ],
+                "body-lg": [
+                        "Manrope"
+                ],
+                "headline-md": [
+                        "Manrope"
+                ],
+                "body-sm": [
+                        "Manrope"
+                ],
+                "label-sm": [
+                        "Manrope"
+                ],
+                "body-md": [
+                        "Manrope"
+                ],
+                "data-mono": ["JetBrains Mono"],
+                "label-caps": ["Manrope"]
+        },
+        "fontSize": {
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "56px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "28px",
+                        {
+                                "lineHeight": "36px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-sm": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "14px",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "data-mono": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .dot-pattern {
+            background-image: radial-gradient(circle, #e4e2e2 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        
+        /* Node styles */
+        .layer-node {
+            position: absolute;
+            width: 180px;
+            cursor: move;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-screen overflow-hidden font-body-md select-none">
+<!-- SideNavBar -->
+<nav class="bg-surface-container-low border-r border-outline-variant fixed left-0 top-0 h-full w-[280px] flex flex-col py-lg px-md gap-sm z-50">
+<div class="flex items-center gap-md px-sm mb-lg">
+<div class="w-8 h-8 bg-primary-container flex items-center justify-center text-on-primary-container rounded-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dataset</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">ModelRoom</h1>
+</div>
+</div>
+<div class="flex flex-col gap-xs flex-1">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="folder_open">folder_open</span>
+<span class="font-body-sm text-body-sm">Projects</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="database">database</span>
+<span class="font-body-sm text-body-sm">Datasets</span>
+</a>
+<!-- Active Tab -->
+<a class="flex items-center gap-md px-md py-sm rounded-lg bg-primary-container text-on-primary-container duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychology" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<span class="font-body-sm text-body-sm font-medium">Models</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="format_list_bulleted">format_list_bulleted</span>
+<span class="font-body-sm text-body-sm">Jobs</span>
+</a>
+</div>
+</nav>
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-outline-variant fixed top-0 right-0 w-[calc(100%-280px)] h-16 flex justify-between items-center px-lg z-40">
+<div class="flex items-center h-full">
+<div class="flex h-full items-center gap-md font-label-caps text-label-caps tracking-widest text-on-surface-variant uppercase">
+<a class="h-full flex items-center hover:text-primary transition-colors active:opacity-80" href="#">Project</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<a class="h-full flex items-center text-primary font-bold border-b-2 border-primary pb-1 active:opacity-80" href="#">Model Name</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex bg-surface-container border border-outline-variant overflow-hidden h-8 rounded-full">
+<button class="px-sm hover:bg-surface-variant flex items-center justify-center text-on-surface-variant transition-colors" title="play_arrow">
+<span class="material-symbols-outlined text-[18px]" data-icon="play_arrow">play_arrow</span>
+</button>
+<div class="w-px bg-outline-variant"></div>
+<button class="px-sm hover:bg-surface-variant flex items-center justify-center text-on-surface-variant transition-colors" title="stop">
+<span class="material-symbols-outlined text-[18px]" data-icon="stop">stop</span>
+</button>
+</div>
+<button class="h-8 px-md border border-outline-variant text-on-surface font-label-caps text-label-caps hover:bg-surface-variant transition-colors uppercase tracking-wider rounded-full">
+                Export
+            </button>
+<button class="h-8 px-md bg-primary text-on-primary font-label-caps text-label-caps hover:brightness-110 transition-all uppercase tracking-wider rounded-full">
+                Deploy
+            </button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden ml-sm">
+<!-- Placeholder for profile image -->
+<div class="w-full h-full bg-surface-variant flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">person</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="fixed top-16 left-[280px] right-0 bottom-8 flex bg-background">
+<!-- Toolbar specific to visual builder -->
+<div class="absolute top-0 left-0 w-full h-12 bg-surface-dim border-b border-outline-variant flex items-center justify-between px-md z-20">
+<div class="flex items-center gap-sm">
+<div class="bg-surface-container border border-outline-variant flex items-center h-8 rounded-full">
+<button class="px-sm h-full hover:bg-surface-variant transition-colors flex items-center text-on-surface-variant"><span class="material-symbols-outlined text-[16px]">add</span></button>
+<div class="w-px h-full bg-outline-variant"></div>
+<span class="font-data-mono text-data-mono px-sm text-on-surface">100%</span>
+<div class="w-px h-full bg-outline-variant"></div>
+<button class="px-sm h-full hover:bg-surface-variant transition-colors flex items-center text-on-surface-variant"><span class="material-symbols-outlined text-[16px]">remove</span></button>
+</div>
+<button class="h-8 px-sm bg-surface-container border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors flex items-center rounded-full">
+<span class="material-symbols-outlined text-[16px]">center_focus_strong</span>
+</button>
+</div>
+<button class="h-8 px-md bg-primary-container text-on-primary-container font-label-caps text-label-caps hover:brightness-110 transition-colors uppercase tracking-wider flex items-center gap-xs rounded-full">
+<span class="material-symbols-outlined text-[16px]">fact_check</span>
+                Validate Architecture
+            </button>
+</div>
+<!-- Canvas Area -->
+<div class="flex-1 relative mt-12 overflow-hidden dot-pattern bg-surface-dim">
+<!-- SVG for Links (Connections) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-0">
+<!-- Input to Conv2D -->
+<path d="M 280 180 C 350 180, 350 120, 420 120" fill="none" stroke="#8b716b" stroke-width="2"></path>
+<circle cx="420" cy="120" fill="#e86b4d" r="4"></circle>
+<!-- Conv2D to ReLU -->
+<path d="M 600 120 C 650 120, 650 120, 700 120" fill="none" stroke="#8b716b" stroke-width="2"></path>
+<circle cx="700" cy="120" fill="#e86b4d" r="4"></circle>
+<!-- ReLU to Linear -->
+<path d="M 880 120 C 950 120, 950 240, 1020 240" fill="none" stroke="#8b716b" stroke-width="2"></path>
+<circle cx="1020" cy="240" fill="#e86b4d" r="4"></circle>
+</svg>
+<!-- Nodes -->
+<!-- Input Node -->
+<div class="layer-node bg-surface-container-lowest border border-outline-variant rounded-DEFAULT shadow-md z-10" style="left: 100px; top: 140px;">
+<div class="bg-surface-container-high px-sm py-xs border-b border-outline-variant flex items-center gap-xs rounded-t-[2px]">
+<span class="material-symbols-outlined text-secondary text-[16px]">input</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider">Input</span>
+</div>
+<div class="p-sm flex flex-col gap-xs font-data-mono text-data-mono text-on-surface-variant">
+<div class="flex justify-between"><span class="">shape:</span> <span class="text-on-surface">[1, 3, 224, 224]</span></div>
+<div class="flex justify-between"><span class="">dtype:</span> <span class="text-on-surface">float32</span></div>
+</div>
+<!-- Output Port -->
+<div class="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-surface border border-outline-variant"></div>
+</div>
+<!-- Conv2D Node (Selected State) -->
+<div class="layer-node bg-surface-container-lowest border border-primary-container ring-1 ring-primary-container shadow-md rounded-DEFAULT z-10" style="left: 420px; top: 80px;">
+<div class="bg-primary-container/10 px-sm py-xs border-b border-primary-container/30 flex items-center justify-between rounded-t-[2px]">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary-container text-[16px]">layers</span>
+<span class="font-label-caps text-label-caps text-primary-container uppercase tracking-wider">Conv2D</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<div class="p-sm flex flex-col gap-xs font-data-mono text-data-mono text-on-surface-variant">
+<div class="flex justify-between"><span class="">in_channels:</span> <span class="text-on-surface">3</span></div>
+<div class="flex justify-between"><span class="">out_channels:</span> <span class="text-on-surface">64</span></div>
+<div class="flex justify-between"><span class="">kernel_size:</span> <span class="text-on-surface">3</span></div>
+</div>
+<!-- Input Port -->
+<div class="absolute left-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-surface border border-primary-container"></div>
+<!-- Output Port -->
+<div class="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary-container border border-primary-container"></div>
+</div>
+<!-- ReLU Node -->
+<div class="layer-node bg-surface-container-lowest border border-outline-variant rounded-DEFAULT shadow-md z-10" style="left: 700px; top: 80px;">
+<div class="bg-surface-container-high px-sm py-xs border-b border-outline-variant flex items-center gap-xs rounded-t-[2px]">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[16px]">show_chart</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider">ReLU</span>
+</div>
+<div class="p-sm flex flex-col gap-xs font-data-mono text-data-mono text-on-surface-variant">
+<div class="flex justify-between"><span class="">inplace:</span> <span class="text-secondary">True</span></div>
+</div>
+<div class="absolute left-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-surface border border-outline-variant"></div>
+<div class="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-surface border border-outline-variant"></div>
+</div>
+<!-- Linear Node -->
+<div class="layer-node bg-surface-container-lowest border border-outline-variant rounded-DEFAULT shadow-md z-10" style="left: 1020px; top: 200px;">
+<div class="bg-surface-container-high px-sm py-xs border-b border-outline-variant flex items-center gap-xs rounded-t-[2px]">
+<span class="material-symbols-outlined text-error text-[16px]">linear_scale</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider">Linear</span>
+</div>
+<div class="p-sm flex flex-col gap-xs font-data-mono text-data-mono text-on-surface-variant">
+<div class="flex justify-between"><span class="">in_features:</span> <span class="text-on-surface">4096</span></div>
+<div class="flex justify-between"><span class="">out_features:</span> <span class="text-on-surface">1000</span></div>
+</div>
+<div class="absolute left-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-surface border border-outline-variant"></div>
+</div>
+</div>
+<!-- Properties Sidebar -->
+<aside class="w-[320px] bg-surface-container border-l border-outline-variant flex flex-col h-full z-30 mt-12">
+<div class="h-12 border-b border-outline-variant flex items-center px-md bg-surface-container-low">
+<h2 class="font-headline-sm text-headline-sm font-medium text-on-surface">Layer Properties</h2>
+</div>
+<div class="flex-1 overflow-y-auto p-md flex flex-col gap-lg">
+<!-- Header Info -->
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">layers</span>
+<h3 class="font-body-md text-body-md font-medium text-on-surface">Conv2D_1</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">2D Convolutional Layer</p>
+</div>
+<div class="w-full h-px bg-outline-variant"></div>
+<!-- Form Groups -->
+<div class="flex flex-col gap-md">
+<!-- Input Group -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">in_channels</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-DEFAULT px-sm py-[6px] font-data-mono text-data-mono text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="text" value="3"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">out_channels</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-DEFAULT px-sm py-[6px] font-data-mono text-data-mono text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="text" value="64"/>
+</div>
+<!-- Split Row -->
+<div class="grid grid-cols-2 gap-sm">
+<div class="flex flex-col gap-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">kernel_size</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-DEFAULT px-sm py-[6px] font-data-mono text-data-mono text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="text" value="3, 3"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">stride</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-DEFAULT px-sm py-[6px] font-data-mono text-data-mono text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="text" value="1, 1"/>
+</div>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">padding</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-DEFAULT px-sm py-[6px] font-data-mono text-data-mono text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
+<option value="valid">valid</option>
+<option selected="" value="same">same</option>
+<option value="custom">custom...</option>
+</select>
+</div>
+<!-- Toggles -->
+<div class="mt-sm flex flex-col gap-sm">
+<label class="flex items-center justify-between cursor-pointer group">
+<span class="font-data-mono text-data-mono text-on-surface group-hover:text-primary transition-colors">bias</span>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</label>
+<label class="flex items-center justify-between cursor-pointer group">
+<span class="font-data-mono text-data-mono text-on-surface group-hover:text-primary transition-colors">dilation</span>
+<div class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-outline after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-primary peer-checked:after:bg-white"></div>
+</div>
+</label>
+</div>
+</div>
+<div class="mt-auto pt-lg border-t border-outline-variant">
+<div class="bg-surface-container-low border border-outline-variant rounded-DEFAULT p-sm flex flex-col gap-xs">
+<div class="flex items-center justify-between font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">
+<span class="">Computed Output</span>
+<span class="material-symbols-outlined text-[14px]">info</span>
+</div>
+<div class="font-data-mono text-data-mono text-secondary">[1, 64, 224, 224]</div>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant fixed bottom-0 right-0 w-[calc(100%-280px)] h-8 flex items-center justify-between px-md z-50">
+<div class="font-data-mono text-data-mono text-on-surface">
+            Environment: GPU NVIDIA A100 - Active | RAM: 32GB/80GB | Disk: 1.2TB | Epoch: 42/100
+        </div>
+<div class="flex items-center gap-md font-data-mono text-data-mono text-on-surface-variant">
+<a class="hover:text-primary cursor-default" href="#">Documentation</a>
+<a class="hover:text-primary cursor-default" href="#">Support</a>
+<a class="hover:text-primary cursor-default flex items-center gap-xs" href="#">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                System Status
+            </a>
+</div>
+</footer>
+</body></html>
