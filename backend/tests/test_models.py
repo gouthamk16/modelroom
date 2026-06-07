@@ -17,3 +17,12 @@ def test_dataset_defaults():
     assert d.project_id == 1
     assert d.n_rows == 0
     assert d.n_cols == 0
+
+
+def test_preparation_defaults():
+    from app.models import Preparation
+
+    p = Preparation(dataset_id=1, target="y")
+    assert p.dataset_id == 1
+    assert p.target == "y"
+    assert p.steps_json == "[]"

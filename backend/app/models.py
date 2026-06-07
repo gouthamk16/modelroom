@@ -24,3 +24,12 @@ class Dataset(SQLModel, table=True):
     n_cols: int = 0
     size_bytes: int = 0
     created_at: datetime = Field(default_factory=_now)
+
+
+class Preparation(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    dataset_id: int = Field(foreign_key="dataset.id", index=True)
+    target: str
+    steps_json: str = "[]"
+    summary_json: str = "{}"
+    created_at: datetime = Field(default_factory=_now)

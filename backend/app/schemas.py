@@ -30,3 +30,16 @@ class DatasetRead(BaseModel):
     n_cols: int
     size_bytes: int
     created_at: datetime
+
+
+class PipelineStep(BaseModel):
+    type: str
+    params: dict = {}
+
+
+class PipelineSpec(BaseModel):
+    target: str
+    steps: list[PipelineStep] = []
+    train_ratio: float = 0.7
+    val_ratio: float = 0.15
+    seed: int = 42
