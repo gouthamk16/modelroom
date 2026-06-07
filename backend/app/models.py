@@ -38,6 +38,7 @@ class Preparation(SQLModel, table=True):
 class ModelDef(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     project_id: int = Field(foreign_key="project.id", index=True)
+    dataset_id: int | None = Field(default=None, foreign_key="dataset.id")
     name: str = "model"
     graph_json: str = "{}"
     created_at: datetime = Field(default_factory=_now)
