@@ -19,3 +19,14 @@ class ProjectRead(BaseModel):
     description: str
     created_at: datetime
     updated_at: datetime
+
+
+class DatasetRead(BaseModel):
+    id: int
+    project_id: int
+    name: str
+    filename: str
+    n_rows: int
+    n_cols: int
+    size_bytes: int
+    created_at: datetime

@@ -13,3 +13,14 @@ class Project(SQLModel, table=True):
     description: str = ""
     created_at: datetime = Field(default_factory=_now)
     updated_at: datetime = Field(default_factory=_now)
+
+
+class Dataset(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    project_id: int = Field(foreign_key="project.id", index=True)
+    name: str
+    filename: str
+    n_rows: int = 0
+    n_cols: int = 0
+    size_bytes: int = 0
+    created_at: datetime = Field(default_factory=_now)
