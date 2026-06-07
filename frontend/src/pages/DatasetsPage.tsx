@@ -2,12 +2,15 @@ import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api/client";
 import { PreviewTable, SchemaList } from "../components/datasets/DatasetTable";
+import { Histogram } from "../components/datasets/Histogram";
+import { CorrelationHeatmap } from "../components/datasets/CorrelationHeatmap";
 
 export function DatasetsPage() {
   const qc = useQueryClient();
   const fileRef = useRef<HTMLInputElement>(null);
   const [projectId, setProjectId] = useState<number | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedColumn, setSelectedColumn] = useState<string | null>(null);
 
   const { data: projects = [] } = useQuery({
     queryKey: ["projects"],
@@ -26,6 +29,17 @@ export function DatasetsPage() {
     queryKey: ["preview", selectedId],
     queryFn: () => api.datasetPreview(selectedId!),
     enabled: selectedId != null,
+  });
+  const { data: correlation } = useQuery({
+    queryKey: ["correlation", selectedId],
+    queryFn: () => api.datasetCorrelation(selectedId!),
+    enabled: selectedId != null,
+  });
+  const histColumn = selectedColumn ?? schema[0]?.name ?? null;
+  const { data: histogram } = useQuery({
+    queryKey: ["histogram", selectedId, histColumn],
+    queryFn: () => api.datasetHistogram(selectedId!, histColumn!),
+    enabled: selectedId != null && histColumn != null,
   });
 
   const upload = useMutation({
@@ -95,7 +109,25 @@ export function DatasetsPage() {
         ) : (
           <>
             {preview && <PreviewTable preview={preview} />}
+            <div className="flex items-center gap-sm">
+              <span className="text-label-md uppercase text-on-surface-variant">
+                Distribution
+              </span>
+              <select
+                value={histColumn ?? ""}
+                onChange={(e) => setSelectedColumn(e.target.value)}
+                className="bg-surface border border-outline-variant rounded px-3 py-1 text-body-sm"
+              >
+                {schema.map((c) => (
+                  <option key={c.name} value={c.name}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {histogram && <Histogram data={histogram} />}
             <SchemaList schema={schema} />
+            {correlation && <CorrelationHeatmap correlation={correlation} />}
           </>
         )}
       </div>
