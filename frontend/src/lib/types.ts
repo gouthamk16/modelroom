@@ -110,3 +110,36 @@ export interface ModelSummary {
   name: string;
   graph: ModelGraph;
 }
+
+export interface RunConfig {
+  optimizer: string;
+  lr: number;
+  epochs: number;
+  batch_size: number;
+  devices: string[];
+}
+
+export interface RunMetricPoint {
+  epoch: number;
+  train_loss: number;
+  val_loss: number;
+  val_acc: number;
+}
+
+export interface RunSummary {
+  epochs?: number;
+  best_val_acc?: number;
+  final_val_loss?: number;
+}
+
+export interface Run {
+  id: number;
+  project_id: number;
+  model_id: number;
+  status: "queued" | "running" | "paused" | "completed" | "failed" | "stopped";
+  last_epoch: number;
+  config: RunConfig;
+  summary: RunSummary;
+  metrics?: RunMetricPoint[];
+  log?: string;
+}

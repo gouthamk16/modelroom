@@ -11,6 +11,8 @@ import type {
   ShapeReport,
   ModelSummary,
   Device,
+  Run,
+  RunConfig,
 } from "../lib/types";
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -80,4 +82,13 @@ export const api = {
     }),
 
   listDevices: () => request<Device[]>(`/system/devices`),
+
+  createRun: (model_id: number, config: Partial<RunConfig>) =>
+    request<Run>(`/runs`, { method: "POST", body: JSON.stringify({ model_id, config }) }),
+  listRuns: (projectId: number) => request<Run[]>(`/projects/${projectId}/runs`),
+  getRun: (runId: number) => request<Run>(`/runs/${runId}`),
+  pauseRun: (runId: number) => request<{ ok: boolean }>(`/runs/${runId}/pause`, { method: "POST" }),
+  resumeRun: (runId: number) =>
+    request<{ ok: boolean }>(`/runs/${runId}/resume`, { method: "POST" }),
+  stopRun: (runId: number) => request<{ ok: boolean }>(`/runs/${runId}/stop`, { method: "POST" }),
 };
