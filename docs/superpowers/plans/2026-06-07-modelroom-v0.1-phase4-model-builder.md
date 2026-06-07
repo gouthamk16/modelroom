@@ -616,20 +616,17 @@ git commit -m "feat(frontend): add pure model-graph helpers"
 - [ ] **Step 1: Write the failing test `frontend/src/components/builder/__tests__/PropertiesPanel.test.tsx`**
 
 ```tsx
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import { PropertiesPanel } from "../PropertiesPanel";
 import type { GraphNode } from "../../../lib/types";
 
 const linear: GraphNode = { id: "l1", type: "linear", params: { out_features: 16 } };
 
-test("edits a numeric param and reports change", async () => {
+test("edits a numeric param and reports change", () => {
   const onChange = vi.fn();
   render(<PropertiesPanel node={linear} onChange={onChange} onRemove={() => {}} />);
-  const input = screen.getByLabelText("out_features");
-  await userEvent.clear(input);
-  await userEvent.type(input, "32");
+  fireEvent.change(screen.getByLabelText("out_features"), { target: { value: "32" } });
   expect(onChange).toHaveBeenCalledWith("l1", { out_features: 32 });
 });
 
