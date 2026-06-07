@@ -16,8 +16,13 @@ function UploadControl({
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
   return (
-    <div className="flex items-center gap-sm">
-      <input ref={fileRef} type="file" accept=".csv" className="text-body-sm max-w-[220px]" />
+    <div className="flex flex-col items-start gap-sm">
+      <input
+        ref={fileRef}
+        type="file"
+        accept=".csv"
+        className="text-body-sm max-w-full file:mr-3 file:rounded-full file:border file:border-outline-variant file:bg-surface-container file:px-3 file:py-1 file:text-on-surface"
+      />
       <button
         disabled={pending}
         onClick={() => {
