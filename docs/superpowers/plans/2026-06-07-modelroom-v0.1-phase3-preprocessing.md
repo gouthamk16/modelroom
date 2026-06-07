@@ -698,7 +698,7 @@ test("adds a step and applies the pipeline", async () => {
   setup();
   await userEvent.selectOptions(screen.getByLabelText("Target"), "label");
   await userEvent.selectOptions(screen.getByLabelText("Add step"), "standardize");
-  expect(screen.getByText("standardize")).toBeInTheDocument();
+  expect(screen.getByText("1. standardize")).toBeInTheDocument();
 
   await userEvent.click(screen.getByRole("button", { name: "Apply Pipeline" }));
   expect(api.savePipeline).toHaveBeenCalled();
