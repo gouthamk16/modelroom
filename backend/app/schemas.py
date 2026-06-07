@@ -61,3 +61,16 @@ class ModelGraph(BaseModel):
     nodes: list[LayerNode] = []
     edges: list[Edge] = []
     input_features: int | None = None
+
+
+class RunConfig(BaseModel):
+    optimizer: str = "adam"
+    lr: float = 0.001
+    epochs: int = 20
+    batch_size: int = 32
+    devices: list[str] = ["cpu"]
+
+
+class RunCreate(BaseModel):
+    model_id: int
+    config: RunConfig = RunConfig()

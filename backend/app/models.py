@@ -42,3 +42,16 @@ class ModelDef(SQLModel, table=True):
     graph_json: str = "{}"
     created_at: datetime = Field(default_factory=_now)
     updated_at: datetime = Field(default_factory=_now)
+
+
+class Run(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    project_id: int = Field(foreign_key="project.id", index=True)
+    model_id: int = Field(foreign_key="modeldef.id", index=True)
+    status: str = "queued"  # queued|running|paused|completed|failed|stopped
+    config_json: str = "{}"
+    summary_json: str = "{}"
+    last_epoch: int = 0
+    created_at: datetime = Field(default_factory=_now)
+    started_at: datetime | None = None
+    finished_at: datetime | None = None

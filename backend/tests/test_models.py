@@ -34,3 +34,12 @@ def test_modeldef_defaults():
     m = ModelDef(project_id=1, name="mlp")
     assert m.project_id == 1
     assert m.graph_json == "{}"
+
+
+def test_run_defaults():
+    from app.models import Run
+
+    r = Run(model_id=1, project_id=1, config_json="{}")
+    assert r.status == "queued"
+    assert r.model_id == 1
+    assert r.last_epoch == 0
