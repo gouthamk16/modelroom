@@ -1077,7 +1077,8 @@ test("renders a cell per matrix entry plus headers", () => {
   );
   // 2 column headers (a,b) appear in both axis label sets => at least 2
   expect(screen.getAllByText("a").length).toBeGreaterThanOrEqual(1);
-  expect(screen.getByText("0.5")).toBeInTheDocument();
+  // symmetric matrix → 0.5 appears in two cells
+  expect(screen.getAllByText("0.5")).toHaveLength(2);
 });
 
 test("renders nothing when fewer than 2 numeric columns", () => {
