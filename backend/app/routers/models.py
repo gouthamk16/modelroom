@@ -20,7 +20,8 @@ class ModelSave(BaseModel):
 @router.post("/model/validate")
 def validate_model(graph: ModelGraph):
     nodes = [n.model_dump() for n in graph.nodes]
-    return shape_engine.validate(nodes, graph.input_features)
+    edges = [e.model_dump() for e in graph.edges]
+    return shape_engine.validate(nodes, edges, graph.input_features)
 
 
 @router.put("/projects/{project_id}/model")

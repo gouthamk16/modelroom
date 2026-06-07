@@ -5,6 +5,10 @@ def _graph():
             {"id": "l1", "type": "linear", "params": {"out_features": 16}},
             {"id": "out", "type": "output", "params": {"classes": 2}},
         ],
+        "edges": [
+            {"source": "in", "target": "l1"},
+            {"source": "l1", "target": "out"},
+        ],
         "input_features": None,
     }
 

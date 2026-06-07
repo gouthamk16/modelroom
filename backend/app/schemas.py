@@ -49,8 +49,16 @@ class LayerNode(BaseModel):
     id: str
     type: str
     params: dict = {}
+    x: float = 0
+    y: float = 0
+
+
+class Edge(BaseModel):
+    source: str
+    target: str
 
 
 class ModelGraph(BaseModel):
     nodes: list[LayerNode] = []
+    edges: list[Edge] = []
     input_features: int | None = None
