@@ -64,3 +64,19 @@ test("preprocessing: build a pipeline and apply it", async ({ page }) => {
   await expect(page.getByText(/train/)).toBeVisible();
   await page.screenshot({ path: "e2e/screens/preprocessing.png", fullPage: true });
 });
+
+test("model builder: add a layer, validate, and save", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "Models" }).click();
+
+  await expect(page.getByText("INPUT")).toBeVisible();
+  await expect(page.getByText("OUTPUT")).toBeVisible();
+
+  await page.getByRole("button", { name: "+ linear" }).click();
+  await expect(page.getByText("LINEAR", { exact: true })).toBeVisible();
+
+  await page.getByRole("button", { name: "Validate Architecture" }).click();
+  await expect(page.getByText(/parameters/)).toBeVisible();
+
+  await page.screenshot({ path: "e2e/screens/model-builder.png", fullPage: true });
+});

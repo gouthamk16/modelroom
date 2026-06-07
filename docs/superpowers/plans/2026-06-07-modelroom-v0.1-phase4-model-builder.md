@@ -983,7 +983,7 @@ test("model builder: add a layer, validate, and save", async ({ page }) => {
 
   // add a linear layer
   await page.getByRole("button", { name: "+ linear" }).click();
-  await expect(page.getByText("LINEAR")).toBeVisible();
+  await expect(page.getByText("LINEAR", { exact: true })).toBeVisible();
 
   // validate
   await page.getByRole("button", { name: "Validate Architecture" }).click();
