@@ -4,6 +4,7 @@ import { api } from "../api/client";
 import { PreviewTable, SchemaList } from "../components/datasets/DatasetTable";
 import { Histogram } from "../components/datasets/Histogram";
 import { CorrelationHeatmap } from "../components/datasets/CorrelationHeatmap";
+import { ProcessingPanel } from "../components/datasets/ProcessingPanel";
 
 export function DatasetsPage() {
   const qc = useQueryClient();
@@ -128,6 +129,7 @@ export function DatasetsPage() {
             {histogram && <Histogram data={histogram} />}
             <SchemaList schema={schema} />
             {correlation && <CorrelationHeatmap correlation={correlation} />}
+            <ProcessingPanel datasetId={selectedId} columns={schema.map((c) => c.name)} />
           </>
         )}
       </div>
