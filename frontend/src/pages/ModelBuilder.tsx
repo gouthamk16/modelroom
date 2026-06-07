@@ -9,25 +9,28 @@ import {
 } from "@xyflow/react";
 import type { Connection, Edge } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api/client";
-import { initialFlow, makeNode, toGraphPayload } from "../lib/graph";
+import { fromGraphPayload, makeNode, toGraphPayload } from "../lib/graph";
 import type { LayerNode as LayerNodeT } from "../lib/graph";
-import type { LayerType, ShapeReport } from "../lib/types";
+import type { LayerType, ModelSummary, ShapeReport } from "../lib/types";
 import { LayerNode } from "../components/builder/LayerNode";
 import { PropertiesPanel } from "../components/builder/PropertiesPanel";
 
 const PALETTE: LayerType[] = ["linear", "relu", "dropout", "batchnorm1d"];
 const nodeTypes = { layer: LayerNode };
 
-export function ModelBuilder() {
-  const { data: projects = [] } = useQuery({
-    queryKey: ["projects"],
-    queryFn: api.listProjects,
-  });
-  const projectId = projects[0]?.id ?? null;
-
-  const initial = useMemo(() => initialFlow(), []);
+export function ModelBuilder({
+  model,
+  datasetName,
+  onBack,
+}: {
+  model: ModelSummary;
+  datasetName?: string;
+  onBack: () => void;
+}) {
+  const qc = useQueryClient();
+  const initial = useMemo(() => fromGraphPayload(model.graph), [model.graph]);
   const [nodes, setNodes, onNodesChange] = useNodesState<LayerNodeT>(initial.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initial.edges);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -47,21 +50,19 @@ export function ModelBuilder() {
     },
   });
   const save = useMutation({
-    mutationFn: () => api.saveModel(projectId!, "mlp", toGraphPayload(nodes, edges, null)),
+    mutationFn: () => api.updateModel(model.id, { graph: toGraphPayload(nodes, edges, null) }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["models", model.project_id] }),
   });
 
   const addNode = (type: LayerType) =>
-    setNodes((nds) => [...nds, makeNode(type, { x: 220, y: 300 + nds.length * 8 })]);
-
+    setNodes((nds) => [...nds, makeNode(type, { x: 240, y: 300 + nds.length * 8 })]);
   const onConnect = (c: Connection) => setEdges((eds) => addEdge(c, eds));
-
   const updateParams = (id: string, params: Record<string, number>) =>
     setNodes((nds) =>
       nds.map((n) =>
         n.id === id ? { ...n, data: { ...n.data, params: { ...n.data.params, ...params } } } : n
       )
     );
-
   const removeNode = (id: string) => {
     setNodes((nds) => nds.filter((n) => n.id !== id));
     setEdges((eds) => eds.filter((e) => e.source !== id && e.target !== id));
@@ -76,6 +77,33 @@ export function ModelBuilder() {
   return (
     <div className="grid grid-cols-[1fr_320px] gap-md h-[calc(100vh-8rem)]">
       <div className="flex flex-col gap-sm min-h-0">
+        <div className="flex items-center gap-sm">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-1 text-body-sm text-on-surface-variant hover:text-primary transition-colors"
+          >
+            <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+            Models
+          </button>
+          <div className="ml-1">
+            <span className="text-headline-sm font-bold text-on-surface">{model.name}</span>
+            <span className="text-label-sm text-on-surface-variant ml-2">
+              {datasetName ? `· ${datasetName}` : "· no dataset"}
+            </span>
+          </div>
+          <div className="ml-auto flex items-center gap-sm">
+            <button
+              onClick={() => validate.mutate()}
+              className="px-5 py-1.5 border border-primary text-primary rounded-full text-body-sm font-semibold hover:bg-primary/5"
+            >
+              Validate Architecture
+            </button>
+            <button onClick={() => save.mutate()} className="btn-primary px-5 py-1.5 text-body-sm">
+              {save.isSuccess ? "Saved" : "Save Model"}
+            </button>
+          </div>
+        </div>
+
         <div className="flex items-center gap-sm flex-wrap">
           {PALETTE.map((t) => (
             <button
@@ -86,27 +114,10 @@ export function ModelBuilder() {
               + {t}
             </button>
           ))}
-          <div className="ml-auto flex items-center gap-sm">
-            <button
-              onClick={() => validate.mutate()}
-              className="px-5 py-1.5 border border-primary text-primary rounded-full text-body-sm font-semibold hover:bg-primary/5"
-            >
-              Validate Architecture
-            </button>
-            <button
-              disabled={!projectId}
-              onClick={() => save.mutate()}
-              className="btn-primary px-5 py-1.5 text-body-sm"
-            >
-              Save Model
-            </button>
-          </div>
+          <span className="text-label-sm text-on-surface-variant ml-1">
+            Drag to arrange · drag from a port to connect · select + Backspace to delete
+          </span>
         </div>
-
-        <p className="text-label-sm text-on-surface-variant">
-          Drag layers to arrange · drag from a port to connect · select + Backspace to delete.
-          {!projectId && " Create a project to enable saving."}
-        </p>
 
         <div className="flex-1 min-h-0 border border-outline-variant rounded-lg bg-surface-container-low overflow-hidden">
           <ReactFlow

@@ -65,22 +65,40 @@ test("preprocessing: build a pipeline and apply it", async ({ page }) => {
   await page.screenshot({ path: "e2e/screens/preprocessing.png", fullPage: true });
 });
 
-test("model builder: validate starter, add a node, get validation feedback", async ({ page }) => {
+test("model builder: create a model, validate, get feedback", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: "Models" }).click();
+  await expect(page.getByRole("heading", { name: "Models", level: 2 })).toBeVisible();
 
+  await page.getByPlaceholder("Model name").fill("E2E MLP");
+  await page.getByRole("button", { name: "Create model" }).click();
+
+  // the builder opens on the starter graph
   await expect(page.getByText("INPUT")).toBeVisible();
   await expect(page.getByText("OUTPUT")).toBeVisible();
 
-  // starter input -> output is a valid graph
   await page.getByRole("button", { name: "Validate Architecture" }).click();
   await expect(page.getByText(/parameters/)).toBeVisible();
 
-  // adding a disconnected layer should be flagged on next validation
+  // a disconnected layer is flagged
   await page.getByRole("button", { name: "+ linear" }).click();
   await expect(page.getByText("LINEAR", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Validate Architecture" }).click();
   await expect(page.getByText(/not connected/i)).toBeVisible();
 
   await page.screenshot({ path: "e2e/screens/model-builder.png", fullPage: true });
+});
+
+test("project detail: open a project summary", async ({ page }) => {
+  await page.goto("/");
+  const name = `Detail ${Date.now()}`;
+  await page.getByPlaceholder("Name a new project").fill(name);
+  await page.getByRole("button", { name: "New Project" }).click();
+
+  await page.getByText(name).click();
+  await expect(page.getByRole("heading", { name, level: 2 })).toBeVisible();
+  await expect(page.getByText("Training runs")).toBeVisible();
+  await expect(page.getByText("Best model")).toBeVisible();
+
+  await page.screenshot({ path: "e2e/screens/project-detail.png", fullPage: true });
 });

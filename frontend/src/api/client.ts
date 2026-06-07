@@ -9,6 +9,7 @@ import type {
   PreparationSummary,
   ModelGraph,
   ShapeReport,
+  ModelSummary,
   Device,
 } from "../lib/types";
 
@@ -23,6 +24,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const api = {
   listProjects: () => request<Project[]>("/projects"),
+  getProject: (id: number) => request<Project>(`/projects/${id}`),
   createProject: (body: { name: string; description?: string }) =>
     request<Project>("/projects", { method: "POST", body: JSON.stringify(body) }),
   deleteProject: (id: number) =>
@@ -64,15 +66,22 @@ export const api = {
       method: "POST",
       body: JSON.stringify(graph),
     }),
-  saveModel: (projectId: number, name: string, graph: ModelGraph) =>
-    request<{ id: number; name: string }>(`/projects/${projectId}/model`, {
-      method: "PUT",
-      body: JSON.stringify({ name, graph }),
+  listModels: (projectId: number) =>
+    request<ModelSummary[]>(`/projects/${projectId}/models`),
+  createModel: (projectId: number, body: { name: string; dataset_id: number | null }) =>
+    request<ModelSummary>(`/projects/${projectId}/models`, {
+      method: "POST",
+      body: JSON.stringify(body),
     }),
-  getModel: (projectId: number) =>
-    request<{ id: number; name: string; graph: ModelGraph }>(
-      `/projects/${projectId}/model`
-    ),
+  getModel: (modelId: number) => request<ModelSummary>(`/models/${modelId}`),
+  updateModel: (
+    modelId: number,
+    body: { name?: string; dataset_id?: number | null; graph?: ModelGraph }
+  ) =>
+    request<ModelSummary>(`/models/${modelId}`, {
+      method: "PUT",
+      body: JSON.stringify(body),
+    }),
 
   listDevices: () => request<Device[]>(`/system/devices`),
 };

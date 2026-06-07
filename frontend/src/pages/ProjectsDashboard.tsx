@@ -11,9 +11,12 @@ function formatDate(iso: string): string {
     : d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
 }
 
-function ProjectCard({ project }: { project: Project }) {
+function ProjectCard({ project, onOpen }: { project: Project; onOpen?: () => void }) {
   return (
-    <article className="group relative bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col gap-sm shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:border-primary/40 cursor-pointer min-h-[180px]">
+    <article
+      onClick={onOpen}
+      className="group relative bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col gap-sm shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:border-primary/40 cursor-pointer min-h-[180px]"
+    >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-primary-container" />
@@ -36,7 +39,11 @@ function ProjectCard({ project }: { project: Project }) {
   );
 }
 
-export function ProjectsDashboard() {
+export function ProjectsDashboard({
+  onOpenProject,
+}: {
+  onOpenProject?: (id: number) => void;
+}) {
   const qc = useQueryClient();
   const [name, setName] = useState("");
   const { data: projects = [] } = useQuery({
@@ -96,7 +103,7 @@ export function ProjectsDashboard() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-md">
           {projects.map((p) => (
-            <ProjectCard key={p.id} project={p} />
+            <ProjectCard key={p.id} project={p} onOpen={() => onOpenProject?.(p.id)} />
           ))}
         </div>
       )}

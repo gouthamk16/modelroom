@@ -103,3 +103,11 @@ export interface ShapeReport {
   nodes: { id: string; out_shape: number[]; n_params: number; error: string | null }[];
   errors: string[];
 }
+
+export interface ModelSummary {
+  id: number;
+  project_id: number;
+  dataset_id: number | null;
+  name: string;
+  graph: ModelGraph;
+}

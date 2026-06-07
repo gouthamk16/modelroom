@@ -54,6 +54,26 @@ export function initialFlow(): { nodes: LayerNode[]; edges: Edge[] } {
   };
 }
 
+export function fromGraphPayload(graph: ModelGraph | undefined): {
+  nodes: LayerNode[];
+  edges: Edge[];
+} {
+  if (!graph || !graph.nodes || graph.nodes.length === 0) return initialFlow();
+  const nodes: LayerNode[] = graph.nodes.map((n) => ({
+    id: n.id,
+    type: "layer",
+    position: { x: n.x, y: n.y },
+    data: { type: n.type, params: n.params },
+    deletable: n.type !== "input" && n.type !== "output",
+  }));
+  const edges: Edge[] = (graph.edges ?? []).map((e) => ({
+    id: `${e.source}-${e.target}`,
+    source: e.source,
+    target: e.target,
+  }));
+  return { nodes, edges };
+}
+
 export function toGraphPayload(
   nodes: LayerNode[],
   edges: Edge[],
