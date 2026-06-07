@@ -5,7 +5,13 @@ const NAV = [
   { label: "Jobs", icon: "format_list_bulleted" },
 ] as const;
 
-export function Sidebar({ active }: { active: string }) {
+export function Sidebar({
+  active,
+  onNavigate,
+}: {
+  active: string;
+  onNavigate: (label: string) => void;
+}) {
   return (
     <nav className="bg-surface-container-low fixed left-0 top-0 h-full w-[280px] border-r border-outline-variant flex flex-col py-lg px-md gap-sm z-50">
       <div className="mb-lg px-sm">
@@ -19,6 +25,10 @@ export function Sidebar({ active }: { active: string }) {
             <li key={label}>
               <a
                 href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate(label);
+                }}
                 className={
                   "flex items-center gap-sm px-sm py-2 rounded-lg font-medium transition-colors duration-200 " +
                   (isActive
