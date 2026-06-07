@@ -62,3 +62,29 @@ export interface PreparationSummary {
   splits: { train: number; val: number; test: number };
   target_distribution?: Record<string, number>;
 }
+
+export type LayerType =
+  | "input"
+  | "linear"
+  | "relu"
+  | "dropout"
+  | "batchnorm1d"
+  | "output";
+
+export interface GraphNode {
+  id: string;
+  type: LayerType;
+  params: Record<string, number>;
+}
+
+export interface ModelGraph {
+  nodes: GraphNode[];
+  input_features: number | null;
+}
+
+export interface ShapeReport {
+  valid: boolean;
+  total_params: number;
+  nodes: { id: string; out_shape: number[]; n_params: number; error: string | null }[];
+  errors: string[];
+}

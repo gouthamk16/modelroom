@@ -7,6 +7,8 @@ import type {
   Correlation,
   PipelineSpec,
   PreparationSummary,
+  ModelGraph,
+  ShapeReport,
 } from "../lib/types";
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -55,4 +57,19 @@ export const api = {
     request<PreparationSummary>(`/datasets/${datasetId}/pipeline/apply`, {
       method: "POST",
     }),
+
+  validateModel: (graph: ModelGraph) =>
+    request<ShapeReport>(`/model/validate`, {
+      method: "POST",
+      body: JSON.stringify(graph),
+    }),
+  saveModel: (projectId: number, name: string, graph: ModelGraph) =>
+    request<{ id: number; name: string }>(`/projects/${projectId}/model`, {
+      method: "PUT",
+      body: JSON.stringify({ name, graph }),
+    }),
+  getModel: (projectId: number) =>
+    request<{ id: number; name: string; graph: ModelGraph }>(
+      `/projects/${projectId}/model`
+    ),
 };
