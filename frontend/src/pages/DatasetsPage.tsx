@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api/client";
 import { EmptyState } from "../components/EmptyState";
@@ -39,17 +39,12 @@ function UploadControl({
 
 export function DatasetsPage() {
   const qc = useQueryClient();
-  const [projectId, setProjectId] = useState<number | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [selectedColumn, setSelectedColumn] = useState<string | null>(null);
 
-  const { data: projects = [] } = useQuery({ queryKey: ["projects"], queryFn: api.listProjects });
-  const effectiveProject = projectId ?? projects[0]?.id ?? null;
-
   const { data: datasets = [] } = useQuery({
-    queryKey: ["datasets", effectiveProject],
-    queryFn: () => api.listDatasets(effectiveProject ?? undefined),
-    enabled: effectiveProject != null,
+    queryKey: ["datasets"],
+    queryFn: () => api.listDatasets(),
   });
   const { data: schema = [] } = useQuery({
     queryKey: ["schema", selectedId],
@@ -74,54 +69,28 @@ export function DatasetsPage() {
   });
 
   const upload = useMutation({
-    mutationFn: (file: File) => api.uploadDataset(effectiveProject!, file),
+    mutationFn: (file: File) => api.uploadDataset(file),
     onSuccess: (ds) => {
-      qc.invalidateQueries({ queryKey: ["datasets", effectiveProject] });
+      qc.invalidateQueries({ queryKey: ["datasets"] });
       setSelectedId(ds.id);
     },
   });
 
-  useEffect(() => {
-    setSelectedId(null);
-  }, [effectiveProject]);
-
   return (
     <>
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-md mb-lg">
-        <div>
-          <h2 className="text-headline-lg text-on-surface">Datasets</h2>
-          <p className="text-body-md text-on-surface-variant mt-xs">
-            Import a CSV to preview, visualize, and preprocess it.
-          </p>
-        </div>
-        <label className="flex items-center gap-sm text-label-md uppercase text-on-surface-variant">
-          Project
-          <select
-            value={effectiveProject ?? ""}
-            onChange={(e) => setProjectId(Number(e.target.value))}
-            className="bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-2.5 text-body-sm normal-case text-on-surface"
-          >
-            {projects.length === 0 && <option value="">No projects yet</option>}
-            {projects.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
-          </select>
-        </label>
+      <div className="mb-lg">
+        <h2 className="text-headline-lg text-on-surface">Datasets</h2>
+        <p className="text-body-md text-on-surface-variant mt-xs">
+          Import a CSV to preview, visualize, and preprocess it. Datasets are shared across
+          all projects.
+        </p>
       </div>
 
-      {effectiveProject == null ? (
-        <EmptyState
-          icon="database"
-          title="No projects yet"
-          description="Create a project in the Projects tab, then import datasets here."
-        />
-      ) : datasets.length === 0 ? (
+      {datasets.length === 0 ? (
         <EmptyState
           icon="upload_file"
           title="Upload your first dataset"
-          description="Add a CSV to this project to preview, visualize, and preprocess it."
+          description="Add a CSV to preview, visualize, and preprocess it."
         >
           <UploadControl onUpload={(f) => upload.mutate(f)} pending={upload.isPending} />
         </EmptyState>

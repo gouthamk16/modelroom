@@ -30,14 +30,13 @@ export function ProjectDetail({
     queryKey: ["project", projectId],
     queryFn: () => api.getProject(projectId),
   });
-  const { data: datasets = [] } = useQuery({
-    queryKey: ["datasets", projectId],
-    queryFn: () => api.listDatasets(projectId),
-  });
   const { data: models = [] } = useQuery({
     queryKey: ["models", projectId],
     queryFn: () => api.listModels(projectId),
   });
+  const datasetsUsed = new Set(
+    models.map((m) => m.dataset_id).filter((id): id is number => id != null)
+  ).size;
 
   return (
     <>
@@ -60,8 +59,8 @@ export function ProjectDetail({
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-md mb-lg">
-        <Stat label="Datasets" value={String(datasets.length)} />
         <Stat label="Models" value={String(models.length)} />
+        <Stat label="Datasets used" value={String(datasetsUsed)} />
         <Stat label="Training runs" value="0" hint="after training (Phase 5)" />
         <Stat label="GPU hours" value="—" hint="after training (Phase 5)" />
         <Stat label="Best model" value="—" hint="needs a completed run" />
@@ -80,48 +79,25 @@ export function ProjectDetail({
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-md">
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-md">
-          <h3 className="text-headline-sm font-bold text-on-surface mb-sm">Datasets</h3>
-          {datasets.length === 0 ? (
-            <p className="text-body-sm text-on-surface-variant">No datasets yet.</p>
-          ) : (
-            <ul className="flex flex-col gap-xs">
-              {datasets.map((d) => (
-                <li
-                  key={d.id}
-                  className="flex items-center justify-between border border-outline-variant rounded-lg px-3 py-2 text-body-sm"
-                >
-                  <span className="text-on-surface font-medium">{d.name}</span>
-                  <span className="text-on-surface-variant text-label-sm">
-                    {d.n_rows} rows · {d.n_cols} cols
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-md">
-          <h3 className="text-headline-sm font-bold text-on-surface mb-sm">Models</h3>
-          {models.length === 0 ? (
-            <p className="text-body-sm text-on-surface-variant">No models yet.</p>
-          ) : (
-            <ul className="flex flex-col gap-xs">
-              {models.map((m) => (
-                <li
-                  key={m.id}
-                  className="flex items-center justify-between border border-outline-variant rounded-lg px-3 py-2 text-body-sm"
-                >
-                  <span className="text-on-surface font-medium">{m.name}</span>
-                  <span className="text-on-surface-variant text-label-sm">
-                    {m.graph?.nodes?.length ?? 0} layers
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+      <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-md">
+        <h3 className="text-headline-sm font-bold text-on-surface mb-sm">Models</h3>
+        {models.length === 0 ? (
+          <p className="text-body-sm text-on-surface-variant">No models yet.</p>
+        ) : (
+          <ul className="flex flex-col gap-xs">
+            {models.map((m) => (
+              <li
+                key={m.id}
+                className="flex items-center justify-between border border-outline-variant rounded-lg px-3 py-2 text-body-sm"
+              >
+                <span className="text-on-surface font-medium">{m.name}</span>
+                <span className="text-on-surface-variant text-label-sm">
+                  {m.graph?.nodes?.length ?? 0} layers
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   );

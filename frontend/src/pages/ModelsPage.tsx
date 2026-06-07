@@ -16,9 +16,8 @@ export function ModelsPage() {
   const effectiveProject = projectId ?? projects[0]?.id ?? null;
 
   const { data: datasets = [] } = useQuery({
-    queryKey: ["datasets", effectiveProject],
-    queryFn: () => api.listDatasets(effectiveProject ?? undefined),
-    enabled: effectiveProject != null,
+    queryKey: ["datasets"],
+    queryFn: () => api.listDatasets(),
   });
   const { data: models = [] } = useQuery({
     queryKey: ["models", effectiveProject],

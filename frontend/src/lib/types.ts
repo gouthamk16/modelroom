@@ -8,7 +8,6 @@ export interface Project {
 
 export interface Dataset {
   id: number;
-  project_id: number;
   name: string;
   filename: string;
   n_rows: number;

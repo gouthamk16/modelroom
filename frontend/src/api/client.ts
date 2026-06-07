@@ -30,15 +30,11 @@ export const api = {
   deleteProject: (id: number) =>
     request<void>(`/projects/${id}`, { method: "DELETE" }),
 
-  listDatasets: (projectId?: number) =>
-    request<Dataset[]>(`/datasets${projectId ? `?project_id=${projectId}` : ""}`),
-  uploadDataset: async (projectId: number, file: File) => {
+  listDatasets: () => request<Dataset[]>(`/datasets`),
+  uploadDataset: async (file: File) => {
     const form = new FormData();
     form.append("file", file);
-    const res = await fetch(`/api/projects/${projectId}/datasets`, {
-      method: "POST",
-      body: form,
-    });
+    const res = await fetch(`/api/datasets`, { method: "POST", body: form });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     return (await res.json()) as Dataset;
   },
