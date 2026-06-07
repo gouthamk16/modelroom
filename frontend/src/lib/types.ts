@@ -40,3 +40,25 @@ export interface Correlation {
   columns: string[];
   matrix: number[][];
 }
+
+export interface PipelineStep {
+  type: string;
+  params: Record<string, unknown>;
+}
+
+export interface PipelineSpec {
+  target: string;
+  steps: PipelineStep[];
+  train_ratio: number;
+  val_ratio: number;
+  seed: number;
+}
+
+export interface PreparationSummary {
+  task: "classification" | "regression";
+  n_features: number;
+  n_classes: number;
+  classes: string[];
+  splits: { train: number; val: number; test: number };
+  target_distribution?: Record<string, number>;
+}

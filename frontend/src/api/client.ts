@@ -5,6 +5,8 @@ import type {
   Preview,
   Histogram,
   Correlation,
+  PipelineSpec,
+  PreparationSummary,
 } from "../lib/types";
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -43,4 +45,14 @@ export const api = {
     ),
   datasetCorrelation: (id: number) =>
     request<Correlation>(`/datasets/${id}/correlation`),
+
+  savePipeline: (datasetId: number, spec: PipelineSpec) =>
+    request<{ id: number; target: string }>(`/datasets/${datasetId}/pipeline`, {
+      method: "PUT",
+      body: JSON.stringify(spec),
+    }),
+  applyPipeline: (datasetId: number) =>
+    request<PreparationSummary>(`/datasets/${datasetId}/pipeline/apply`, {
+      method: "POST",
+    }),
 };
