@@ -9,6 +9,7 @@ import type {
   PreparationSummary,
   ModelGraph,
   ShapeReport,
+  Device,
 } from "../lib/types";
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -72,4 +73,6 @@ export const api = {
     request<{ id: number; name: string; graph: ModelGraph }>(
       `/projects/${projectId}/model`
     ),
+
+  listDevices: () => request<Device[]>(`/system/devices`),
 };

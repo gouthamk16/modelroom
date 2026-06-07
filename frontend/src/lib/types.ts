@@ -63,6 +63,13 @@ export interface PreparationSummary {
   target_distribution?: Record<string, number>;
 }
 
+export interface Device {
+  id: string;
+  name: string;
+  kind: "cpu" | "cuda";
+  memory_mb: number | null;
+}
+
 export type LayerType =
   | "input"
   | "linear"
