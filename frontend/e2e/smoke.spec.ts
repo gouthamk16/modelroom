@@ -116,6 +116,8 @@ test("training: create a model on a prepared dataset, train, and complete", asyn
   // live run view -> completes (CPU/GPU, 3 epochs)
   await expect(page.getByText("Run #", { exact: false })).toBeVisible();
   await expect(page.getByText("completed", { exact: false })).toBeVisible({ timeout: 90000 });
+  // evaluation viz appears after completion
+  await expect(page.getByText("Confusion matrix", { exact: false })).toBeVisible({ timeout: 10000 });
 
   await page.screenshot({ path: "e2e/screens/training.png", fullPage: true });
 });
