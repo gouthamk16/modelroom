@@ -15,7 +15,7 @@ export function Sidebar({
   return (
     <nav className="bg-surface-container-low fixed left-0 top-0 h-full w-[280px] border-r border-outline-variant flex flex-col py-lg px-md gap-sm z-50">
       <div className="mb-xl px-sm pt-xs">
-        <h1 className="logo-font text-[28px] leading-none text-primary">ModelRoom</h1>
+        <h1 className="logo-font text-[26px] leading-none text-primary-container">ModelRoom</h1>
       </div>
       <ul className="flex flex-col gap-base flex-1">
         {NAV.map(({ label, icon }) => {
