@@ -26,3 +26,11 @@ def test_preparation_defaults():
     assert p.dataset_id == 1
     assert p.target == "y"
     assert p.steps_json == "[]"
+
+
+def test_modeldef_defaults():
+    from app.models import ModelDef
+
+    m = ModelDef(project_id=1, name="mlp")
+    assert m.project_id == 1
+    assert m.graph_json == "{}"

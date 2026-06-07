@@ -33,3 +33,12 @@ class Preparation(SQLModel, table=True):
     steps_json: str = "[]"
     summary_json: str = "{}"
     created_at: datetime = Field(default_factory=_now)
+
+
+class ModelDef(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    project_id: int = Field(foreign_key="project.id", index=True)
+    name: str = "model"
+    graph_json: str = "{}"
+    created_at: datetime = Field(default_factory=_now)
+    updated_at: datetime = Field(default_factory=_now)

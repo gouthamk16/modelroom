@@ -43,3 +43,14 @@ class PipelineSpec(BaseModel):
     train_ratio: float = 0.7
     val_ratio: float = 0.15
     seed: int = 42
+
+
+class LayerNode(BaseModel):
+    id: str
+    type: str
+    params: dict = {}
+
+
+class ModelGraph(BaseModel):
+    nodes: list[LayerNode] = []
+    input_features: int | None = None
