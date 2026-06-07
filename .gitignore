@@ -18,6 +18,9 @@ frontend/.playwright/
 # ModelRoom workspace (datasets, checkpoints, sqlite db)
 .modelroom/
 
+# Logs
+*.log
+
 # OS / editor
 .DS_Store
 Thumbs.db
