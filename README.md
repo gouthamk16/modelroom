@@ -1,5 +1,7 @@
 # ModelRoom
 
+![ModelRoom — visual model builder](assets/screenshot.png)
+
 A local, single-user studio for building and training ML/DL models through a UI — import data, preprocess it, design a network visually, train it on your GPU with live metrics, and review the results. Runs entirely on your machine (FastAPI + PyTorch backend, React + Vite frontend).
 
 ## Requirements
