@@ -24,7 +24,6 @@ test("datasets: upload a CSV and see preview + visualizations", async ({ page })
     mimeType: "text/csv",
     buffer: Buffer.from(CSV),
   });
-  await page.getByRole("button", { name: "Upload CSV" }).click();
 
   // dataset appears in the list and is auto-selected
   await expect(page.getByText("mr.csv")).toBeVisible();
