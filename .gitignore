@@ -21,6 +21,9 @@ frontend/.playwright/
 # Logs
 *.log
 
+# Agent worktrees / tooling
+.claude/
+
 # OS / editor
 .DS_Store
 Thumbs.db
